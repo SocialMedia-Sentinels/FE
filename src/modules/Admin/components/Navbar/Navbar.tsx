@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import sentinels from 'src/modules/Share/assets/images/Sentinels_logo.svg.png'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import classNames from 'classnames'
 import path from 'src/modules/Share/constants/path'
@@ -44,7 +43,12 @@ const Navbar = () => {
             to={path.home}
             className='text-lg font-bold text-black flex items-center justify-between'
           >
-            <img src={sentinels} alt='logo' width={40} height={40} />
+            <img
+              src='/src/modules/Share/assets/images/Sentinels_logo.svg.png'
+              alt='logo'
+              width={40}
+              height={40}
+            />
             <span className='text-[#fff] ml-4 font-Titillium font-black text-[20px] '>
               SENTINELS
             </span>
