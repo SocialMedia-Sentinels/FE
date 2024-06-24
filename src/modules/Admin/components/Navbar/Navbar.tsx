@@ -44,10 +44,10 @@ const Navbar = () => {
             className='text-lg font-bold text-black flex items-center justify-between'
           >
             <img
-              src='/src/modules/Share/assets/images/Sentinels_logo.png'
+              src='https://www.gmrpc.com/teamdata/sentinels.png'
               alt='logo'
-              width={40}
-              height={40}
+              width={50}
+              height={50}
             />
             <span className='text-[#fff] ml-4 font-Titillium font-black text-[20px] '>
               SENTINELS
