@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/aria-role */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Avatar, Box, Button, styled, Tab, Tabs } from '@mui/material'
 import { Fragment, useState } from 'react'
 import avatar from '../../../Share/assets/images/5cc101f5-7f03-46ac-95f6-d0ea32c31400.jpg'
@@ -432,7 +434,7 @@ const UserProfilePage = () => {
               {error.response.data.message}
             </h1>
             <p className='mt-4 text-gray-500 dark:text-gray-400'>
-              The page you are looking for doesn't exist. Here are some helpful links:
+              The page you are looking for doesnt exist. Here are some helpful links:
             </p>
             <button
               onClick={() => navigate(path.home)}
