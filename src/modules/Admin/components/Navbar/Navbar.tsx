@@ -45,12 +45,7 @@ const Navbar = () => {
             to={path.home}
             className='text-lg font-bold text-black flex items-center justify-between'
           >
-            <img
-              src={sentinels}
-              alt='logo'
-              width={40}
-              height={40}
-            />
+            <img src={sentinels} alt='logo' width={40} height={40} />
             <span className='text-[#fff] ml-4 font-Titillium font-black text-[20px] '>
               SENTINELS
             </span>

@@ -1,4 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, PasswordInput } from '@mantine/core'
+import rocket from 'src/modules/Share/assets/images/rocket.png'
+
 interface Props {
   formResetPassword: any
   handleSubmitForm: (data: any) => void
@@ -6,11 +9,7 @@ interface Props {
 const ResetPasswordForm = ({ handleSubmitForm, formResetPassword }: Props) => {
   return (
     <div className='px-16 py-10 bg-white w-[484px] rounded-b-md relative'>
-      <img
-        className='absolute top-[-40px] left-[-80px]'
-        src='/src/modules/Share/assets/images/rocket.png'
-        alt='rocket'
-      />
+      <img src={rocket} alt='rocket' className='top-[-40px] absolute left-[-80px]' />
       <h2 className='text-2xl text-center font-bold text-[#3e3f5e] mb-4'>Forgot password</h2>
       <form
         className='relative flex flex-col gap-2'
