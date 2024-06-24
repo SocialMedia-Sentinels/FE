@@ -71,7 +71,7 @@ const ClientRegisterForm = ({ formRegister, handleSubmit, userRegisterCommandHan
           label='Date of birth'
           defaultValue={new Date()}
           onChange={(value) => formRegister.setFieldValue('date_of_birth', value)}
-          excludeDate={(date) => date < new Date(new Date().getFullYear() - 10)}
+          excludeDate={(date) => date.getTime() > new Date().setHours(0, 0, 0, 0)}
         />
 
         <Button
