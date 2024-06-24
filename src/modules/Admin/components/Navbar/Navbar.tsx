@@ -1,6 +1,5 @@
-import sentinels from 'src/modules/Share/assets/images/Sentinels_logo.svg.png'
-/* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import sentinels from 'src/modules/Share/assets/images/Sentinels_logo.svg.png'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import classNames from 'classnames'
 import path from 'src/modules/Share/constants/path'
