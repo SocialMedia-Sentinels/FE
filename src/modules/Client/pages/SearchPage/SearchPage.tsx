@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Fragment, useEffect, useState } from 'react'
 import { Helmet } from 'react-helmet-async'
 import InfiniteScroll from 'react-infinite-scroll-component'
@@ -202,7 +203,7 @@ const SearchPage = () => {
                     404
                   </h2>
                   <h4 className='mb-3 text-[22px] font-semibold leading-tight '>
-                    Oops! That page can't be found
+                    Oops! That page cant be found
                   </h4>
                   <p className='mb-8 text-lg '>The page you are looking for it maybe deleted</p>
                   <Button

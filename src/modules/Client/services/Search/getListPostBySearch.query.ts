@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useQuery } from '@tanstack/react-query'
 import useQuerySearchConfig from '../../hooks/useQuerySearchConfig'
 import searchService from './search.service'

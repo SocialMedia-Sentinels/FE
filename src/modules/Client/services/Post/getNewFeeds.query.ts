@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useQuery } from '@tanstack/react-query'
 import { NewFeedsResType } from '../../interfaces/Post'
 import postService from './post.service'

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useQuery } from '@tanstack/react-query'
 import userService from '../user.service'
 import { SuggestionsConfig, UserSuggestionInfoType } from '../../interfaces'

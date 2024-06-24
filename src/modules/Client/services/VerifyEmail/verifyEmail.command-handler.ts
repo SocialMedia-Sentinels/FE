@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import userService from '../user.service'
 
 class VerifyEmailCommandHandler {

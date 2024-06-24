@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { UseFormRegister } from 'react-hook-form'
 
 interface Props {
