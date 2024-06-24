@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Tabs } from '@mantine/core'
 import { Fragment, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -9,7 +10,7 @@ import { useForm } from '@mantine/form'
 import ClientLoginForm from '../../components/ClientLoginForm'
 import ClientRegisterForm from '../../components/ClientRegisterForm'
 import { Helmet } from 'react-helmet-async'
-
+import sentinels from 'src/modules/Share/assets/images/Sentinels_logo.svg.png'
 const LandingPage = () => {
   const navigate = useNavigate()
   const { setIsAuthenticated } = useContext(AppContext)
@@ -95,12 +96,7 @@ const LandingPage = () => {
       </Helmet>
       <div className='w-[580px] absolute left-[12%] top-[16%]'>
         <div className='flex justify-center'>
-          <img
-            src='/src/modules/Share/assets/images/Sentinels_logo.svg.png'
-            alt='logo'
-            width={100}
-            height={100}
-          />
+          <img src={sentinels} alt='logo' width={100} height={100} />
         </div>
         <h2 className='text-center uppercase text-[#fff] mt-7 text-2xl font-serif-'>Welcome to</h2>
         <h1 className='text-center font-Titillium text-8xl font-black uppercase text-[#fff]'>

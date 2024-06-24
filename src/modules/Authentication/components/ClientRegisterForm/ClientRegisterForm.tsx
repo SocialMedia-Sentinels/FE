@@ -1,8 +1,11 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Autocomplete, Button, Chip, Group, PasswordInput, TextInput } from '@mantine/core'
 import { DatePickerInput } from '@mantine/dates'
 import '@mantine/dates/styles.css'
 import { UserRegisterCommandHandler } from '../../services'
 import { dataLocation } from 'src/modules/Share/constants/data'
+import rocket from 'src/modules/Share/assets/images/rocket.png'
 
 interface Props {
   formRegister: any
@@ -12,11 +15,7 @@ interface Props {
 const ClientRegisterForm = ({ formRegister, handleSubmit, userRegisterCommandHandler }: Props) => {
   return (
     <div className='p-10 bg-white w-[484px] rounded-b-md '>
-      <img
-        className='top-[-8px] absolute left-[-80px]'
-        src='/src/modules/Share/assets/images/rocket.png'
-        alt='rocket'
-      />
+      <img src={rocket} alt='rocket' className='top-[-8px] absolute left-[-80px]' />
       <h2 className='text-2xl text-center font-bold text-[#3e3f5e]'>Create an account</h2>
       <form className='grid grid-cols-2 gap-4' onSubmit={formRegister.onSubmit(handleSubmit)}>
         <TextInput
@@ -33,7 +32,7 @@ const ClientRegisterForm = ({ formRegister, handleSubmit, userRegisterCommandHan
         />
         <Chip.Group {...formRegister.getInputProps('gender')}>
           <div className='mt-4 '>
-            <label htmlFor=''>Gender</label>
+            <label>Gender</label>
             <Group justify='start' mt={'xs'}>
               <Chip value='1'>Male</Chip>
               <Chip value='0'>Female</Chip>
