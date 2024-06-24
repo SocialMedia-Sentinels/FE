@@ -10,7 +10,7 @@ const FormUploadAvatar = ({ handleCloseModalUploadAvatar, handleChangeAvatar }: 
       <h2 className='text-[20px] font-Rajdhani font-semibold'>Change Profile Photo</h2>
       <FileInput
         placeholder='Choose your new profile avatar'
-        accept='image/png,image/jpg'
+        accept='image/png,image/jpg,image/jpeg'
         onChange={(files) => handleChangeAvatar(files as File)}
       />
 
