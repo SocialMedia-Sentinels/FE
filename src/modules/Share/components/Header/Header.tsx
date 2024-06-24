@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable import/named */
 import { useContext, useState } from 'react'
 import { AppContext } from '../../contexts/app.context'
@@ -64,6 +65,9 @@ export default function Header() {
       search: createSearchParams(omitBy(config, isEmpty) as URLSearchParamsInit).toString()
     })
   }
+  const handleNavigateToProfile = () => {
+    navigate(`${path.profile}/${profile.username}`)
+  }
   return (
     <header className='w-full sticky top-0 h-[72px] border-[1px] bg-white shadow-bottom transition-all z-50'>
       <div className='w-full  lg:max-w-full md:max-w-[786px] sm:max-w-[640px] flex items-center justify-between h-full px-6 overflow-hidden text-black  '>
@@ -102,11 +106,7 @@ export default function Header() {
                 </Menu.Target>
 
                 <Menu.Dropdown>
-                  <Menu.Item
-                    component='a'
-                    href={`${path.profile}/${profile.username}`}
-                    leftSection={<IconUser style={{ width: rem(14), height: rem(14) }} />}
-                  >
+                  <Menu.Item leftSection={<IconUser style={{ width: rem(14), height: rem(14) }} />} onClick={handleNavigateToProfile}>
                     Profile
                   </Menu.Item>
 

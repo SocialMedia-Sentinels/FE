@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import classNames from 'classnames'
@@ -13,6 +14,7 @@ import {
   getRefreshTokenFromLocalStorage
 } from 'src/modules/Authentication/utils'
 import { toast } from 'react-toastify'
+import sentinels from 'src/modules/Share/assets/images/Sentinels_logo.svg.png'
 
 const Navbar = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(AppContext)
@@ -44,7 +46,7 @@ const Navbar = () => {
             className='text-lg font-bold text-black flex items-center justify-between'
           >
             <img
-              src='/src/modules/Share/assets/images/Sentinels_logo.svg.png'
+              src={sentinels}
               alt='logo'
               width={40}
               height={40}
