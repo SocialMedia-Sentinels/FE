@@ -44,7 +44,7 @@ const Navbar = () => {
             className='text-lg font-bold text-black flex items-center justify-between'
           >
             <img
-              src='/src/modules/Share/assets/images/Sentinels_logo.svg.png'
+              src='/src/modules/Share/assets/images/Sentinels_logo.png'
               alt='logo'
               width={40}
               height={40}

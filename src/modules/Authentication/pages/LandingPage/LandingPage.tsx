@@ -10,7 +10,7 @@ import { useForm } from '@mantine/form'
 import ClientLoginForm from '../../components/ClientLoginForm'
 import ClientRegisterForm from '../../components/ClientRegisterForm'
 import { Helmet } from 'react-helmet-async'
-import sentinels from 'src/modules/Share/assets/images/Sentinels_logo.svg.png'
+import sentinels from 'src/modules/Share/assets/images/Sentinels_logo.png'
 const LandingPage = () => {
   const navigate = useNavigate()
   const { setIsAuthenticated } = useContext(AppContext)
