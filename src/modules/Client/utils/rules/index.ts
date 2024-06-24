@@ -1,0 +1,5 @@
+export * from './formEdit.rules'
+export * from './formCreatePost.rules'
+export * from './formCreateTicket.rules'
+export * from './filter_suggestion.rules'
+export * from './formCreateComment.rules'
