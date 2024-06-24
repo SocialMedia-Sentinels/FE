@@ -184,7 +184,7 @@ const ModalPostDetail = ({ post, onClose }: Props) => {
               {post.likes} likes
             </Text>
           </Card.Section>
-          <ScrollArea h={200}>
+          <ScrollArea h={300}>
             {comments &&
               comments.length > 0 &&
               comments.map((comment) => <CardComment key={comment._id} comment={comment} />)}
