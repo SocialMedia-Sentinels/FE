@@ -51,8 +51,9 @@ class Http {
         return response
       },
       async (error: any) => {
-        if (error.response && error.response.status === HttpStatusCode.Forbidden) {
-        }
+        // if (error.response && error.response.status === HttpStatusCode.Forbidden) {
+        //   setAccessTokenToLocalStorage('')
+        // }
         if (
           error.response &&
           [HttpStatusCode.UnprocessableEntity, HttpStatusCode.Unauthorized].includes(

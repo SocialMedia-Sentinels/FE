@@ -65,6 +65,7 @@ const HomePage = () => {
           )
         )
       },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (error: any) => {
         console.log(error)
       }
@@ -101,6 +102,7 @@ const HomePage = () => {
           )
         )
       },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (error: any) => {
         console.log(error)
       }
@@ -208,7 +210,6 @@ const HomePage = () => {
               <path d='M19 19m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0' />
               <path d='M17 21l4 -4' />
             </svg>
-            <h1 className='mt-3 font-semibold text-gray-800 text-3xl'></h1>
             <p className='mt-4 text-gray-500 dark:text-gray-400'>
               The current user account is not verify. Please access the email you registered with
               and verify it

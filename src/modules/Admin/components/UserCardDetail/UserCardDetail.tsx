@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Avatar, Badge, Button, Group, Text, ThemeIcon } from '@mantine/core'
 import { IconAt, IconMapPin, IconPhoneCall } from '@tabler/icons-react'
 import ButtonCustom from 'src/modules/Share/components/ButtonCustom'

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import classNames from 'classnames'
 import path from 'src/modules/Share/constants/path'

@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/media-has-caption */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   ActionIcon,
   Avatar,

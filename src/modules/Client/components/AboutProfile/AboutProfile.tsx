@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { formatDateToReadable } from 'src/modules/Share/utils/utils'
 import { User } from '../../interfaces'
 import { Button } from '@mui/material'

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useQuery } from '@tanstack/react-query'
 import { Bookmark, PaginationConfig } from '../../interfaces'
 import bookmarkService from './bookmark.service'

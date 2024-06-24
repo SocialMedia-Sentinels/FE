@@ -1,3 +1,6 @@
+/* eslint-disable jsx-a11y/media-has-caption */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable jsx-a11y/interactive-supports-focus */
 import { Modal, Switch, Textarea, TagsInput, BackgroundImage } from '@mantine/core'
 import { useState } from 'react'
 import { Avatar, Button } from '@mui/material'
@@ -32,7 +35,7 @@ const FormPost = ({ profileUser, open, opened, close }: Props) => {
       medias: []
     },
     validate: {
-      content: (value) => (value.length > 0 ? null : 'Content is required!')
+      content: (value: any) => (value.length > 0 ? null : 'Content is required!')
     }
   })
 
@@ -272,6 +275,7 @@ const FormPost = ({ profileUser, open, opened, close }: Props) => {
               {selectedFileVideo &&
                 selectedFileVideo.map((video, index) => {
                   return (
+                    // eslint-disable-next-line react/jsx-key
                     <div className='relative w-60'>
                       <video
                         className='shadow-lg'
@@ -314,16 +318,15 @@ const FormPost = ({ profileUser, open, opened, close }: Props) => {
           </Button>
         </form>
       </Modal>
-      <div
+      <button
         className='px-3 py-1 flex items-end flex-row justify-start relative border-2 w-full rounded-3xl'
-        role='button'
         onClick={open}
       >
         <div className='w-full flex items-center gap-2'>
           <Avatar src={profileUser?.avatar} />
           <span>What do you think?</span>
         </div>
-      </div>
+      </button>
     </div>
   )
 }

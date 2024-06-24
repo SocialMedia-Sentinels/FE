@@ -7,9 +7,9 @@ export default defineConfig({
   server: {
     port: 3000
   },
-  define: {
-    global: 'window'
-  },
+  // define: {
+  //   global: 'window'
+  // },
   css: {
     devSourcemap: true
   },

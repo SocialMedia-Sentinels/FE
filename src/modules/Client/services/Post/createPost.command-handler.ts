@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { CreatePostTypeBody } from '../../utils'
 import postService from './post.service'

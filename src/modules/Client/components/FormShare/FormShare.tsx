@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/media-has-caption */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { BackgroundImage, Button, Card, Switch, TagsInput, Text, Textarea } from '@mantine/core'
 import { useForm, UseFormReturnType } from '@mantine/form'
 import { NewFeed } from '../../interfaces/Post'

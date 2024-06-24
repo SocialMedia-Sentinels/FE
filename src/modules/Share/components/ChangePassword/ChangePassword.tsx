@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useForm } from '@mantine/form'
 import ButtonCustom from '../ButtonCustom'
-import { PasswordInput } from '@mantine/core'
-import { Button } from '@mantine/core'
+import { PasswordInput, Button } from '@mantine/core'
 import { UserChangePasswordCommandHandler } from 'src/modules/Authentication/services'
 import { toast } from 'react-toastify'
 interface Props {

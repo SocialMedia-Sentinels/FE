@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Combobox, Input, InputBase, Text, Textarea, useCombobox } from '@mantine/core'
 import { useForm, UseFormReturnType } from '@mantine/form'
 import { User } from '../../interfaces'

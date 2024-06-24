@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Autocomplete, Button, Textarea, TextInput } from '@mantine/core'
 import { User } from '../../interfaces'
 import { DatePickerInput } from '@mantine/dates'

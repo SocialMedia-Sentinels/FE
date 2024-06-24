@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { CreateCommentTypeBody } from '../../utils/rules/formCreateComment.rules'
 import commentService from './comment.service'

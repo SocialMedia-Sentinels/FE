@@ -530,7 +530,7 @@ const ChatPage = () => {
                       name='files'
                       multiple={false}
                       onChange={onSelectFile}
-                      accept='.pdf, .txt, .xls, .xlsx, .mp4, .webm, .mov'
+                      accept='.pdf, .txt, .xls, .mp4, .webm, .mov'
                       className='hidden'
                     />
                   </label>

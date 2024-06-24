@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Avatar, Button, Card, Group, Text } from '@mantine/core'
 import { UserSuggestionInfoType } from '../../interfaces'
 import { FollowUserCommandHandler } from '../../services'

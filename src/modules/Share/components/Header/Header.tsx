@@ -1,3 +1,4 @@
+/* eslint-disable import/named */
 import { useContext, useState } from 'react'
 import { AppContext } from '../../contexts/app.context'
 import {
@@ -30,6 +31,7 @@ export default function Header() {
         clearTokenFromLocalStorage()
         navigate(path.landing)
       },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (error: any) => {
         toast.error(error.response?.data?.message)
       }

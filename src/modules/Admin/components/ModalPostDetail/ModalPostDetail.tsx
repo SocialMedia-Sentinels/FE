@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/media-has-caption */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Avatar,
   Badge,
@@ -185,7 +187,7 @@ const ModalPostDetail = ({ post, onClose }: Props) => {
           <ScrollArea h={200}>
             {comments &&
               comments.length > 0 &&
-              comments.map((comment) => <CardComment comment={comment} />)}
+              comments.map((comment) => <CardComment key={comment._id} comment={comment} />)}
           </ScrollArea>
         </Grid.Col>
       </Grid>

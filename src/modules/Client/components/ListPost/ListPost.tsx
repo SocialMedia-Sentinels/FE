@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react'
 import { useDisclosure } from '@mantine/hooks'
 import { User } from '../../interfaces'

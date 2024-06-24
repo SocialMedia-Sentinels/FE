@@ -27,6 +27,7 @@ const FormHelp = ({ close }: Props) => {
   })
   const createTicketCommandHandler = new CreateTicketCommandHandler()
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleCreateTicket = (data: any) => {
     createTicketCommandHandler.handle(
       data,
@@ -35,6 +36,7 @@ const FormHelp = ({ close }: Props) => {
         toast.success('Submit ticket successfully')
         formCreateTicket.reset()
       },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (error: any) => {
         toast.error(error.response.data.message)
         formCreateTicket.setErrors({

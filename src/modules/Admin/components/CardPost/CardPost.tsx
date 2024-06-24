@@ -26,7 +26,6 @@ const CardPost = ({ post, onClick }: Props) => {
             {post.user.email}
           </Text>
         </div>
-        
       </Group>
       <Card.Section className={classes.footer}>
         <Group justify='space-between'>

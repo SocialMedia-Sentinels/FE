@@ -20,7 +20,7 @@ const userService = {
 
   follow: (body: { followed_user_id: string }) => http.post('/users/follow', body),
 
-  unFollow: (username: string) => http.delete(`/users/follow/${username}`), 
+  unFollow: (username: string) => http.delete(`/users/follow/${username}`),
 
   suggestion: (params: SuggestionsConfig) => http.get('/users/suggestion', { params }),
 

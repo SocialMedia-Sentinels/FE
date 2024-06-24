@@ -104,6 +104,7 @@ const ArticleCard = ({
       {post.medias.length != 0 && post.medias[0].type == 1 && (
         <Card.Section className='px-4 m-auto'>
           {post.medias.map((video, index) => (
+            // eslint-disable-next-line jsx-a11y/media-has-caption
             <video controls key={index}>
               <source src={video.url} type='video/mp4' />
             </video>
@@ -164,6 +165,7 @@ const ArticleCard = ({
               post.post_parent.medias.length > 0 &&
               post.post_parent.medias.map((video, index) => {
                 return (
+                  // eslint-disable-next-line jsx-a11y/media-has-caption
                   <video controls key={index}>
                     <source src={video.url} type='video/mp4' />
                   </video>
