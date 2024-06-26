@@ -59,7 +59,6 @@ const FormPost = ({ profileUser, open, opened, close }: Props) => {
           setSelectedImages([])
           setSelectedFilesImage([])
           close()
-          window.location.reload()
           toast.success('Create post successfully')
         },
         (error: any) => {
@@ -88,22 +87,23 @@ const FormPost = ({ profileUser, open, opened, close }: Props) => {
           })
         }
       )
+    } else {
+      createPostCommandHandler.handleCreatePost(
+        data,
+        () => {
+          formCreatePost.reset()
+          close()
+          window.location.reload()
+          toast.success('Create post successfully')
+        },
+        (error: any) => {
+          toast.error(error.response.data.message)
+          formCreatePost.setErrors({
+            content: error.response.data.error.content?.msg
+          })
+        }
+      )
     }
-    createPostCommandHandler.handleCreatePost(
-      data,
-      () => {
-        formCreatePost.reset()
-        close()
-        window.location.reload()
-        toast.success('Create post successfully')
-      },
-      (error: any) => {
-        toast.error(error.response.data.message)
-        formCreatePost.setErrors({
-          content: error.response.data.error.content?.msg
-        })
-      }
-    )
   }
   const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const isChecked = event.currentTarget.checked

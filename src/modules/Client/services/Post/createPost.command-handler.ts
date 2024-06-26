@@ -18,6 +18,7 @@ class CreatePostCommandHandler {
       mutationFn: (body: CreatePostTypeBody) => postService.createPost(body)
     })
   }
+
   handleCreatePost = async (data: CreatePostTypeBody, handleSuccess: any, handleError: any) => {
     this._createPostMutation.mutate(data, {
       onSuccess: () => {
@@ -34,6 +35,7 @@ class CreatePostCommandHandler {
       }
     })
   }
+
   handleCreatePostWithImage = async (
     data: CreatePostTypeBody,
     files: File[],
@@ -41,7 +43,7 @@ class CreatePostCommandHandler {
     handleError: any
   ) => {
     try {
-      if (files.length == 0) {
+      if (files.length === 0) {
         data.medias = []
       } else {
         const form = new FormData()
@@ -58,24 +60,19 @@ class CreatePostCommandHandler {
         data.medias = mediaData
       }
 
-      this._createPostMutation.mutate(data, {
-        onSuccess: () => {
-          this._queryClient.invalidateQueries({
-            queryKey: ['my-posts']
-          })
-          this._queryClient.refetchQueries({
-            queryKey: ['new-feeds']
-          })
-          handleSuccess()
-        },
-        onError: (error: any) => {
-          handleError(error)
-        }
+      await this._createPostMutation.mutateAsync(data)
+      this._queryClient.invalidateQueries({
+        queryKey: ['my-posts']
       })
+      this._queryClient.refetchQueries({
+        queryKey: ['new-feeds']
+      })
+      handleSuccess()
     } catch (error) {
       handleError(error)
     }
   }
+
   handleCreatePostWithVideo = async (
     data: CreatePostTypeBody,
     files: File[],
@@ -83,7 +80,7 @@ class CreatePostCommandHandler {
     handleError: any
   ) => {
     try {
-      if (files.length == 0) {
+      if (files.length === 0) {
         data.medias = []
       } else {
         const form = new FormData()
@@ -97,24 +94,17 @@ class CreatePostCommandHandler {
             url: item.url
           })
         )
-
         data.medias = mediaData
       }
 
-      this._createPostMutation.mutate(data, {
-        onSuccess: () => {
-          this._queryClient.invalidateQueries({
-            queryKey: ['my-posts']
-          })
-          this._queryClient.refetchQueries({
-            queryKey: ['new-feeds']
-          })
-          handleSuccess()
-        },
-        onError: (error: any) => {
-          handleError(error)
-        }
+      await this._createPostMutation.mutateAsync(data)
+      this._queryClient.invalidateQueries({
+        queryKey: ['my-posts']
       })
+      this._queryClient.refetchQueries({
+        queryKey: ['new-feeds']
+      })
+      handleSuccess()
     } catch (error) {
       handleError(error)
     }
@@ -136,6 +126,7 @@ class CreatePostCommandHandler {
       }
     })
   }
+
   isLoading() {
     return this._createPostMutation.isLoading
   }
