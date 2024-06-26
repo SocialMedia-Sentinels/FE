@@ -393,10 +393,10 @@ const UserProfilePage = () => {
               />
             </Box>
             <Box role='Following' hidden={valueTab !== 2}>
-              <FollowedList followingList={followingList} setValueTab={setValueTab} />
+              <FollowedList followingList={followingList} />
             </Box>
             <Box role='Follower' hidden={valueTab !== 3}>
-              <FollowedList followingList={followerList} setValueTab={setValueTab} />
+              <FollowedList followingList={followerList} />
             </Box>
           </div>
           <Modal

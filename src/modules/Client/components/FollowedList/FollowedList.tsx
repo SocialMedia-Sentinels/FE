@@ -6,10 +6,9 @@ import { chunk } from 'src/modules/Share/constants/enum'
 import { IconSearch } from '@tabler/icons-react'
 interface Props {
   followingList: ResListFollowingType
-  setValueTab: React.Dispatch<React.SetStateAction<number>>
 }
 
-const FollowedList = ({ followingList, setValueTab }: Props) => {
+const FollowedList = ({ followingList }: Props) => {
   const [activePage, setPage] = useState(1)
   const [search, setSearch] = useState('')
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,9 +25,7 @@ const FollowedList = ({ followingList, setValueTab }: Props) => {
   const data = chunk(filteredUsers, 9)
   let items
   if (data.length > 0) {
-    items = data[activePage - 1].map((item) => (
-      <CardUser user={item} key={item._id} setValueTab={setValueTab} />
-    ))
+    items = data[activePage - 1].map((item) => <CardUser user={item} key={item._id} />)
   }
   console.log('data', data)
 

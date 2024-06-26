@@ -2,16 +2,16 @@
 import { useNavigate } from 'react-router-dom'
 import { UserFollowingInfoType } from '../../interfaces'
 import { Avatar } from '@mantine/core'
+import path from 'src/modules/Share/constants/path'
 interface Props {
   user: UserFollowingInfoType
-  setValueTab: React.Dispatch<React.SetStateAction<number>>
 }
-const CardUser = ({ user, setValueTab }: Props) => {
+const CardUser = ({ user }: Props) => {
   const navigate = useNavigate()
 
   const onShowDetail = (username: string) => {
-    setValueTab(1)
-    navigate(`/profile/${username}`)
+    navigate(`${path.profile}/${username}`)
+    window.location.reload()
   }
   return (
     <div

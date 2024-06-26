@@ -3,7 +3,6 @@ import { useForm } from '@mantine/form'
 import ButtonCustom from '../ButtonCustom'
 import { PasswordInput, Button } from '@mantine/core'
 import { UserChangePasswordCommandHandler } from 'src/modules/Authentication/services'
-import { toast } from 'react-toastify'
 interface Props {
   handleCloseModal: () => void
 }
@@ -32,7 +31,9 @@ const ChangePassword = ({ handleCloseModal }: Props) => {
         handleCloseModal()
       },
       (error: any) => {
-        toast.error(error.response?.data?.message)
+        formChangePassword.setErrors({
+          old_password: error.response.data.message
+        })
       }
     )
   }

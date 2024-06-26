@@ -29,11 +29,11 @@ import {
 } from '@tabler/icons-react'
 import { formatTimeToReadable } from 'src/modules/Share/utils'
 import { GetListCommentQuery } from 'src/modules/Client/services/Comment/getListComment.query'
-import CardComment from 'src/modules/Client/components/CardComment/CardComment'
 import Swal from 'sweetalert2'
 import { useNavigate } from 'react-router-dom'
 import path from 'src/modules/Share/constants/path'
 import { AdminDeletePostCommandHandler } from '../../services/adminDeletePost.command-handler'
+import CommentOfPost from '../CommentOfPost/CommentOfPost'
 
 interface Props {
   post: Post
@@ -187,7 +187,7 @@ const ModalPostDetail = ({ post, onClose }: Props) => {
           <ScrollArea h={300}>
             {comments &&
               comments.length > 0 &&
-              comments.map((comment) => <CardComment key={comment._id} comment={comment} />)}
+              comments.map((comment) => <CommentOfPost key={comment._id} comment={comment} />)}
           </ScrollArea>
         </Grid.Col>
       </Grid>

@@ -50,10 +50,10 @@ export default function Header() {
   }
   const querySearchConfig = useQuerySearchConfig()
 
+  const [searchQuery, setSearchQuery] = useState<string>('')
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const formData = new FormData(event.currentTarget)
-    const searchQuery = formData.get('search') as string
     const config = {
       ...querySearchConfig,
       page: 1,
@@ -64,16 +64,19 @@ export default function Header() {
       pathname: path.search,
       search: createSearchParams(omitBy(config, isEmpty) as URLSearchParamsInit).toString()
     })
+    setSearchQuery('')
   }
+
   const handleNavigateToProfile = () => {
     navigate(`${path.profile}/${profile.username}`)
   }
+
   return (
     <header className='w-full sticky top-0 h-[72px] border-[1px] bg-white shadow-bottom transition-all z-50'>
-      <div className='w-full  lg:max-w-full md:max-w-[786px] sm:max-w-[640px] flex items-center justify-between h-full px-6 overflow-hidden text-black  '>
+      <div className='w-full lg:max-w-full md:max-w-[786px] sm:max-w-[640px] flex items-center justify-between h-full px-6 overflow-hidden text-black'>
         <div className='flex justify-center flex-1 text-[#26C6DA]'>
-          <form onSubmit={handleSubmit} className='relative w-full max-w-xl  '>
-            <div className='absolute inset-y-0 flex items-center pl-1  '>
+          <form onSubmit={handleSubmit} className='relative w-full max-w-xl'>
+            <div className='absolute inset-y-0 flex items-center pl-1'>
               <svg aria-hidden='true' fill='currentColor' viewBox='0 0 20 20' className='w-6 h-6'>
                 <path
                   fillRule='evenodd'
@@ -84,7 +87,9 @@ export default function Header() {
             </div>
             <input
               name='search'
-              className=' block w-[200px] sm:w-[400px] lg:w-full appearance-none bg-white border border-gray-300 rounded-md py-2 px-3  text-sm focus:outline-none leading-5 focus:border-[#26C6DA] focus:rounded-lg !pl-8 text-gray-700'
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className='block w-[200px] sm:w-[400px] lg:w-full appearance-none bg-white border border-gray-300 rounded-md py-2 px-3 text-sm focus:outline-none leading-5 focus:border-[#26C6DA] focus:rounded-lg !pl-8 text-gray-700'
               type='text'
               placeholder='Search'
               aria-label='Search'
@@ -106,7 +111,10 @@ export default function Header() {
                 </Menu.Target>
 
                 <Menu.Dropdown>
-                  <Menu.Item leftSection={<IconUser style={{ width: rem(14), height: rem(14) }} />} onClick={handleNavigateToProfile}>
+                  <Menu.Item
+                    leftSection={<IconUser style={{ width: rem(14), height: rem(14) }} />}
+                    onClick={handleNavigateToProfile}
+                  >
                     Profile
                   </Menu.Item>
 

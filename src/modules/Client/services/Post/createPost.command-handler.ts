@@ -18,7 +18,22 @@ class CreatePostCommandHandler {
       mutationFn: (body: CreatePostTypeBody) => postService.createPost(body)
     })
   }
-
+  handleCreatePost = async (data: CreatePostTypeBody, handleSuccess: any, handleError: any) => {
+    this._createPostMutation.mutate(data, {
+      onSuccess: () => {
+        this._queryClient.invalidateQueries({
+          queryKey: ['my-posts']
+        })
+        this._queryClient.refetchQueries({
+          queryKey: ['new-feeds']
+        })
+        handleSuccess()
+      },
+      onError: (error: any) => {
+        handleError(error)
+      }
+    })
+  }
   handleCreatePostWithImage = async (
     data: CreatePostTypeBody,
     files: File[],
@@ -26,7 +41,7 @@ class CreatePostCommandHandler {
     handleError: any
   ) => {
     try {
-      if (files.length === 0) {
+      if (files.length == 0) {
         data.medias = []
       } else {
         const form = new FormData()
@@ -40,7 +55,6 @@ class CreatePostCommandHandler {
             url: item.url
           })
         )
-
         data.medias = mediaData
       }
 
@@ -69,7 +83,7 @@ class CreatePostCommandHandler {
     handleError: any
   ) => {
     try {
-      if (files.length === 0) {
+      if (files.length == 0) {
         data.medias = []
       } else {
         const form = new FormData()

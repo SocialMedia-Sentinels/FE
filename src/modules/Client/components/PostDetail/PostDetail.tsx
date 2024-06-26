@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -309,9 +310,11 @@ const PostDetail = ({ post, deletePostCommandHandler }: Props) => {
                 post.post_parent.medias.length > 0 &&
                 post.post_parent.medias.map((video, index) => {
                   return (
-                    <video controls key={index}>
-                      <source src={video.url} type='video/mp4' />
-                    </video>
+                    <Card.Section className='w-80 px-4 m-auto'>
+                      <video controls key={index}>
+                        <source src={video.url} type='video/mp4' />
+                      </video>
+                    </Card.Section>
                   )
                 })}
             </div>
@@ -346,7 +349,7 @@ const PostDetail = ({ post, deletePostCommandHandler }: Props) => {
           </Card.Section>
         )}
         {post.medias.length != 0 && post.medias[0].type == 1 && (
-          <Card.Section className='px-4 m-auto'>
+          <Card.Section className='w-80 px-4 m-auto'>
             {post.medias.map((video, index) => (
               <video controls key={index}>
                 <source src={video.url} type='video/mp4' />
