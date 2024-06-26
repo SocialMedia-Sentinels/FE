@@ -79,212 +79,217 @@ const ModalPostDetail = ({ post, onClose }: Props) => {
   }
   return (
     <Card withBorder radius='md' p='md' className=''>
-      {post.type == 0 && post.medias.length > 0 ? (
-        <Grid>
-          <Grid.Col span={7} className='shadow-lg'>
-            {post.medias.length != 0 && post.medias[0].type == 0 && (
-              <Card.Section className='px-4'>
-                <Carousel
-                  withIndicators
-                  height={400}
-                  slideGap='md'
-                  align='start'
-                  classNames={classes}
-                >
-                  {post.medias.map((image, index) => (
-                    <Carousel.Slide key={index}>
-                      <Image src={image.url} radius='md' h={400} fit='contain' />
-                    </Carousel.Slide>
+      {post.type == 0 &&
+        (post.medias.length > 0 ? (
+          <Grid>
+            <Grid.Col span={7} className='shadow-lg'>
+              {post.medias.length != 0 && post.medias[0].type == 0 && (
+                <Card.Section className='px-4'>
+                  <Carousel
+                    withIndicators
+                    height={400}
+                    slideGap='md'
+                    align='start'
+                    classNames={classes}
+                  >
+                    {post.medias.map((image, index) => (
+                      <Carousel.Slide key={index}>
+                        <Image src={image.url} radius='md' h={400} fit='contain' />
+                      </Carousel.Slide>
+                    ))}
+                  </Carousel>
+                </Card.Section>
+              )}
+              {post.medias.length != 0 && post.medias[0].type == 1 && (
+                <Card.Section className='w-80 px-4 m-auto'>
+                  {post.medias.map((video, index) => (
+                    <video controls key={index}>
+                      <source src={video.url} type='video/mp4' />
+                    </video>
                   ))}
-                </Carousel>
-              </Card.Section>
-            )}
-            {post.medias.length != 0 && post.medias[0].type == 1 && (
-              <Card.Section className='w-80 px-4 m-auto'>
-                {post.medias.map((video, index) => (
-                  <video controls key={index}>
-                    <source src={video.url} type='video/mp4' />
-                  </video>
-                ))}
-              </Card.Section>
-            )}
-          </Grid.Col>
-          <Grid.Col span={5} className='px-4'>
-            <Group>
-              <Avatar src={post.user.avatar} radius='xl' size='50' />
-              <div className='inline-grid'>
-                <Text fw={500}>{post.user.username}</Text>
-                {post.type == 0 ? (
-                  <Text fz='xs' c='dimmed' className='flex justify-center items-center gap-1'>
-                    posted {formatTimeToReadable(post.created_at)}
-                    {post.audience == 0 ? (
-                      <IconWorld className='w-4 h-4' />
-                    ) : (
-                      <IconUsers className='w-4 h-4' />
-                    )}
-                  </Text>
-                ) : (
-                  <Text fz='xs' c='dimmed' className='flex justify-center items-center gap-1'>
-                    shared {formatTimeToReadable(post.created_at)}
-                    {post.audience == 0 ? (
-                      <IconWorld className='w-4 h-4' />
-                    ) : (
-                      <IconUsers className='w-4 h-4' />
-                    )}
-                  </Text>
-                )}
-              </div>
-              <Menu shadow='md' position='right-start'>
-                <Menu.Target>
-                  <Button
-                    variant='transparent'
-                    size='xs'
-                    rightSection={<IconDotsVertical style={{ width: rem(14), height: rem(14) }} />}
-                    className='text-black font-medium'
-                  ></Button>
-                </Menu.Target>
-                <Menu.Dropdown>
-                  <Menu.Item
-                    leftSection={<IconTrash style={{ width: rem(14), height: rem(14) }} />}
-                    onClick={() => handleDeletePost(post._id)}
-                  >
-                    Delete
-                  </Menu.Item>
-                </Menu.Dropdown>
-              </Menu>
-            </Group>
-
-            <Group className='my-2'>
-              {post.hashtags &&
-                post.hashtags.length > 0 &&
-                post.hashtags.map((hashtag, index) => (
-                  <Badge w='fit-content' variant='light' key={index}>
-                    {hashtag.name}
-                  </Badge>
-                ))}
-            </Group>
-            <Text>{post.content}</Text>
-            <Card.Section className='mt-4 mb-[-5] mx-[-5] py-[10px] px-5'>
-              <Group gap={2}>
-                <IconHeartFilled
-                  style={{ width: rem(20), height: rem(30) }}
-                  color={theme.colors.red[6]}
-                  stroke={1.5}
-                />
-                <IconBookmarkFilled
-                  style={{ width: rem(20), height: rem(30) }}
-                  color={theme.colors.yellow[6]}
-                  stroke={1.5}
-                />
-                <IconShare3
-                  style={{ width: rem(20), height: rem(30) }}
-                  color={theme.colors.blue[6]}
-                  stroke={1.5}
-                />
+                </Card.Section>
+              )}
+            </Grid.Col>
+            <Grid.Col span={5} className='px-4'>
+              <Group>
+                <Avatar src={post.user.avatar} radius='xl' size='50' />
+                <div className='inline-grid'>
+                  <Text fw={500}>{post.user.username}</Text>
+                  {post.type == 0 ? (
+                    <Text fz='xs' c='dimmed' className='flex justify-center items-center gap-1'>
+                      posted {formatTimeToReadable(post.created_at)}
+                      {post.audience == 0 ? (
+                        <IconWorld className='w-4 h-4' />
+                      ) : (
+                        <IconUsers className='w-4 h-4' />
+                      )}
+                    </Text>
+                  ) : (
+                    <Text fz='xs' c='dimmed' className='flex justify-center items-center gap-1'>
+                      shared {formatTimeToReadable(post.created_at)}
+                      {post.audience == 0 ? (
+                        <IconWorld className='w-4 h-4' />
+                      ) : (
+                        <IconUsers className='w-4 h-4' />
+                      )}
+                    </Text>
+                  )}
+                </div>
+                <Menu shadow='md' position='right-start'>
+                  <Menu.Target>
+                    <Button
+                      variant='transparent'
+                      size='xs'
+                      rightSection={
+                        <IconDotsVertical style={{ width: rem(14), height: rem(14) }} />
+                      }
+                      className='text-black font-medium'
+                    ></Button>
+                  </Menu.Target>
+                  <Menu.Dropdown>
+                    <Menu.Item
+                      leftSection={<IconTrash style={{ width: rem(14), height: rem(14) }} />}
+                      onClick={() => handleDeletePost(post._id)}
+                    >
+                      Delete
+                    </Menu.Item>
+                  </Menu.Dropdown>
+                </Menu>
               </Group>
-              <Text fz='xs' c='dimmed'>
-                {post.likes} likes
-              </Text>
-            </Card.Section>
-            {comments && comments.length > 0 && (
-              <ScrollArea h={300}>
-                {comments.map((comment) => (
-                  <CommentOfPost key={comment._id} comment={comment} />
-                ))}
-              </ScrollArea>
-            )}
-          </Grid.Col>
-        </Grid>
-      ) : (
-        <Grid>
-          <Grid.Col span={12} className='px-4'>
-            <Group>
-              <Avatar src={post.user.avatar} radius='xl' size='50' />
-              <div className='inline-grid'>
-                <Text fw={500}>{post.user.username}</Text>
-                {post.type == 0 ? (
-                  <Text fz='xs' c='dimmed' className='flex justify-center items-center gap-1'>
-                    posted {formatTimeToReadable(post.created_at)}
-                    {post.audience == 0 ? (
-                      <IconWorld className='w-4 h-4' />
-                    ) : (
-                      <IconUsers className='w-4 h-4' />
-                    )}
-                  </Text>
-                ) : (
-                  <Text fz='xs' c='dimmed' className='flex justify-center items-center gap-1'>
-                    shared {formatTimeToReadable(post.created_at)}
-                    {post.audience == 0 ? (
-                      <IconWorld className='w-4 h-4' />
-                    ) : (
-                      <IconUsers className='w-4 h-4' />
-                    )}
-                  </Text>
-                )}
-              </div>
-              <Menu shadow='md' position='right-start'>
-                <Menu.Target>
-                  <Button
-                    variant='transparent'
-                    size='xs'
-                    rightSection={<IconDotsVertical style={{ width: rem(14), height: rem(14) }} />}
-                    className='text-black font-medium'
-                  ></Button>
-                </Menu.Target>
-                <Menu.Dropdown>
-                  <Menu.Item
-                    leftSection={<IconTrash style={{ width: rem(14), height: rem(14) }} />}
-                    onClick={() => handleDeletePost(post._id)}
-                  >
-                    Delete
-                  </Menu.Item>
-                </Menu.Dropdown>
-              </Menu>
-            </Group>
 
-            <Group className='my-2'>
-              {post.hashtags &&
-                post.hashtags.length > 0 &&
-                post.hashtags.map((hashtag, index) => (
-                  <Badge w='fit-content' variant='light' key={index}>
-                    {hashtag.name}
-                  </Badge>
-                ))}
-            </Group>
-            <Text>{post.content}</Text>
-            <Card.Section className='mt-4 mb-[-5] mx-[-5] py-[10px] px-5'>
-              <Group gap={2}>
-                <IconHeartFilled
-                  style={{ width: rem(20), height: rem(30) }}
-                  color={theme.colors.red[6]}
-                  stroke={1.5}
-                />
-                <IconBookmarkFilled
-                  style={{ width: rem(20), height: rem(30) }}
-                  color={theme.colors.yellow[6]}
-                  stroke={1.5}
-                />
-                <IconShare3
-                  style={{ width: rem(20), height: rem(30) }}
-                  color={theme.colors.blue[6]}
-                  stroke={1.5}
-                />
+              <Group className='my-2'>
+                {post.hashtags &&
+                  post.hashtags.length > 0 &&
+                  post.hashtags.map((hashtag, index) => (
+                    <Badge w='fit-content' variant='light' key={index}>
+                      {hashtag.name}
+                    </Badge>
+                  ))}
               </Group>
-              <Text fz='xs' c='dimmed'>
-                {post.likes} likes
-              </Text>
-            </Card.Section>
+              <Text>{post.content}</Text>
+              <Card.Section className='mt-4 mb-[-5] mx-[-5] py-[10px] px-5'>
+                <Group gap={2}>
+                  <IconHeartFilled
+                    style={{ width: rem(20), height: rem(30) }}
+                    color={theme.colors.red[6]}
+                    stroke={1.5}
+                  />
+                  <IconBookmarkFilled
+                    style={{ width: rem(20), height: rem(30) }}
+                    color={theme.colors.yellow[6]}
+                    stroke={1.5}
+                  />
+                  <IconShare3
+                    style={{ width: rem(20), height: rem(30) }}
+                    color={theme.colors.blue[6]}
+                    stroke={1.5}
+                  />
+                </Group>
+                <Text fz='xs' c='dimmed'>
+                  {post.likes} likes
+                </Text>
+              </Card.Section>
+              {comments && comments.length > 0 && (
+                <ScrollArea h={300}>
+                  {comments.map((comment) => (
+                    <CommentOfPost key={comment._id} comment={comment} />
+                  ))}
+                </ScrollArea>
+              )}
+            </Grid.Col>
+          </Grid>
+        ) : (
+          <Grid>
+            <Grid.Col span={12} className='px-4'>
+              <Group>
+                <Avatar src={post.user.avatar} radius='xl' size='50' />
+                <div className='inline-grid'>
+                  <Text fw={500}>{post.user.username}</Text>
+                  {post.type == 0 ? (
+                    <Text fz='xs' c='dimmed' className='flex justify-center items-center gap-1'>
+                      posted {formatTimeToReadable(post.created_at)}
+                      {post.audience == 0 ? (
+                        <IconWorld className='w-4 h-4' />
+                      ) : (
+                        <IconUsers className='w-4 h-4' />
+                      )}
+                    </Text>
+                  ) : (
+                    <Text fz='xs' c='dimmed' className='flex justify-center items-center gap-1'>
+                      shared {formatTimeToReadable(post.created_at)}
+                      {post.audience == 0 ? (
+                        <IconWorld className='w-4 h-4' />
+                      ) : (
+                        <IconUsers className='w-4 h-4' />
+                      )}
+                    </Text>
+                  )}
+                </div>
+                <Menu shadow='md' position='right-start'>
+                  <Menu.Target>
+                    <Button
+                      variant='transparent'
+                      size='xs'
+                      rightSection={
+                        <IconDotsVertical style={{ width: rem(14), height: rem(14) }} />
+                      }
+                      className='text-black font-medium'
+                    ></Button>
+                  </Menu.Target>
+                  <Menu.Dropdown>
+                    <Menu.Item
+                      leftSection={<IconTrash style={{ width: rem(14), height: rem(14) }} />}
+                      onClick={() => handleDeletePost(post._id)}
+                    >
+                      Delete
+                    </Menu.Item>
+                  </Menu.Dropdown>
+                </Menu>
+              </Group>
 
-            {comments && comments.length > 0 && (
-              <ScrollArea h={300}>
-                {comments.map((comment) => (
-                  <CommentOfPost key={comment._id} comment={comment} />
-                ))}
-              </ScrollArea>
-            )}
-          </Grid.Col>
-        </Grid>
-      )}
+              <Group className='my-2'>
+                {post.hashtags &&
+                  post.hashtags.length > 0 &&
+                  post.hashtags.map((hashtag, index) => (
+                    <Badge w='fit-content' variant='light' key={index}>
+                      {hashtag.name}
+                    </Badge>
+                  ))}
+              </Group>
+              <Text>{post.content}</Text>
+              <Card.Section className='mt-4 mb-[-5] mx-[-5] py-[10px] px-5'>
+                <Group gap={2}>
+                  <IconHeartFilled
+                    style={{ width: rem(20), height: rem(30) }}
+                    color={theme.colors.red[6]}
+                    stroke={1.5}
+                  />
+                  <IconBookmarkFilled
+                    style={{ width: rem(20), height: rem(30) }}
+                    color={theme.colors.yellow[6]}
+                    stroke={1.5}
+                  />
+                  <IconShare3
+                    style={{ width: rem(20), height: rem(30) }}
+                    color={theme.colors.blue[6]}
+                    stroke={1.5}
+                  />
+                </Group>
+                <Text fz='xs' c='dimmed'>
+                  {post.likes} likes
+                </Text>
+              </Card.Section>
+
+              {comments && comments.length > 0 && (
+                <ScrollArea h={300}>
+                  {comments.map((comment) => (
+                    <CommentOfPost key={comment._id} comment={comment} />
+                  ))}
+                </ScrollArea>
+              )}
+            </Grid.Col>
+          </Grid>
+        ))}
       {post.type == 1 && (
         <Grid>
           <Grid.Col span={12} className='px-4'>

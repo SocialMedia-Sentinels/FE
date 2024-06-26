@@ -418,7 +418,7 @@ const PostDetail = ({ post, deletePostCommandHandler }: Props) => {
         <FormShare post={post} />
       </Modal>
       <Modal size={'xl'} opened={openedFormEdit} onClose={closeFormEdit} title='Edit Post' centered>
-        <FormEditPost post={post} />
+        <FormEditPost post={post} closeModal={closeFormEdit} />
       </Modal>
       <div className='mt-4 w-[60%] mx-auto'>
         <form onSubmit={formCreateComment.onSubmit(handleCreateComment)}>
