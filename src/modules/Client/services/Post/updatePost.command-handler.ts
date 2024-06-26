@@ -27,6 +27,8 @@ class UpdatePostCommandHandler {
     handleSuccess: any,
     handleError: any
   ) => {
+    console.log('update image', data)
+
     try {
       if (files.length == 0) {
         data.body.medias = []
@@ -62,6 +64,8 @@ class UpdatePostCommandHandler {
     handleSuccess: any,
     handleError: any
   ) => {
+    console.log('update video', data)
+
     try {
       if (files.length == 0) {
         data.body.medias = []
@@ -97,6 +101,8 @@ class UpdatePostCommandHandler {
     handleSuccess: any,
     handleError: any
   ) => {
+    console.log('update', data.body)
+
     await this._updatePostMutation.mutate(data, {
       onSuccess: () => {
         this._queryClient.invalidateQueries({
