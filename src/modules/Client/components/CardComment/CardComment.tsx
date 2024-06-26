@@ -30,6 +30,7 @@ const CardComment = ({ comment, user_id }: Props) => {
   const [isEdit, setIsEdit] = useState(false)
   const [isEditReply, setIsEditReply] = useState(false)
   const [isReply, setIsReply] = useState(false)
+  const [editReplyId, setEditReplyId] = useState<string | null>(null)
   const deleteCommentCommandHandler = new DeleteCommentCommandHandler()
 
   const handleDeleteComment = (id: string) => {
@@ -116,7 +117,7 @@ const CardComment = ({ comment, user_id }: Props) => {
             <Card className='pl-[54px] mt-4'>
               {comment.comment_reply.map((reply, index) => (
                 <Card.Section className='my-2 ' key={index}>
-                  {isEditReply ? (
+                  {isEditReply && editReplyId === reply._id ? (
                     <FormEditComment comment={reply} setIsEdit={setIsEditReply} />
                   ) : (
                     <>
@@ -147,7 +148,9 @@ const CardComment = ({ comment, user_id }: Props) => {
                                 leftSection={
                                   <IconEdit style={{ width: rem(14), height: rem(14) }} />
                                 }
-                                onClick={() => setIsEditReply(true)}
+                                onClick={() => {
+                                  setEditReplyId(reply._id), setIsEditReply(true)
+                                }}
                               >
                                 Edit
                               </Menu.Item>
