@@ -21,7 +21,10 @@ const EditProfile = ({ handleCloseModal, profile, updateMeCommandHandler }: Prop
   const schema = z.object({
     username: z.string().min(5, { message: 'Username should have at least 5 letters' }),
     bio: z.string().max(200, { message: 'Bio must be from 1 to 200 characters' }),
-    location: z.string().max(100, { message: 'Location must be between 1 and 100 characters' })
+    location: z.string().max(100, { message: 'Location must be between 1 and 100 characters' }),
+    phone_number: z
+      .string()
+      .max(15, { message: 'Phone number must be between 1 and 15 characters' })
   })
   const formEditProfile = useForm({
     initialValues: {
@@ -42,6 +45,9 @@ const EditProfile = ({ handleCloseModal, profile, updateMeCommandHandler }: Prop
     if (formData.username === profile.username) {
       delete formData.username
     }
+    if (formData.phone_number === profile.phone_number) {
+      delete formData.phone_number
+    }
     handleUpdateProfile(formData)
   }
 
@@ -60,7 +66,8 @@ const EditProfile = ({ handleCloseModal, profile, updateMeCommandHandler }: Prop
         formEditProfile.setErrors({
           username: error.response.data.errors.username?.msg,
           bio: error.response.data.errors.bio?.msg,
-          location: error.response.data.errors.location?.msg
+          location: error.response.data.errors.location?.msg,
+          phone_number: error.response.data.errors.phone_number?.msg
         })
       }
     )
