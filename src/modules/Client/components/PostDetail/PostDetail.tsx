@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
@@ -29,6 +30,7 @@ import {
   IconEdit,
   IconHeart,
   IconHeartFilled,
+  IconSend2,
   IconShare3,
   IconTrash,
   IconUsers,
@@ -162,7 +164,9 @@ const PostDetail = ({ post, deletePostCommandHandler }: Props) => {
 
   let items
   if (data && data.length > 0) {
-    items = data[activePage - 1].map((item) => <CardComment comment={item} key={item._id} />)
+    items = data[activePage - 1].map((item) => (
+      <CardComment comment={item} user_id={JWTInfo.user_id} key={item._id} />
+    ))
   }
 
   const handleDeletePost = (id: string) => {
@@ -190,6 +194,7 @@ const PostDetail = ({ post, deletePostCommandHandler }: Props) => {
       }
     })
   }
+
   return (
     <div className=''>
       <Card withBorder padding='md' radius='md' className=''>
@@ -412,35 +417,40 @@ const PostDetail = ({ post, deletePostCommandHandler }: Props) => {
       <Modal size={'xl'} opened={openedFormEdit} onClose={closeFormEdit} title='Edit Post' centered>
         <FormEditPost post={post} />
       </Modal>
-      <form
-        className='flex items-end w-[80%] justify-between mt-6 overflow-hidden'
-        onSubmit={formCreateComment.onSubmit(handleCreateComment)}
-      >
-        <Textarea
-          resize='vertical'
-          label='Your comment'
-          placeholder='Write a comment...'
-          className='w-[90%] '
-          {...formCreateComment.getInputProps('content')}
-        />
-        <Button type='submit' className='bg-[#297eff]'>
-          Submit
-        </Button>
-      </form>
-      <div className='mt-4'>
-        {comments && (
-          <SimpleGrid cols={1} className='w-[80%]'>
-            {items}
-          </SimpleGrid>
-        )}
-        <Pagination
-          total={data.length}
-          value={activePage}
-          onChange={setActivePage}
-          mt='md'
-          className='flex justify-center '
-          withEdges
-        />
+      <div className='mt-4 w-[60%] mx-auto'>
+        <form onSubmit={formCreateComment.onSubmit(handleCreateComment)}>
+          <Card withBorder padding='md'>
+            <Card.Section>
+              <Textarea
+                variant='unstyled'
+                placeholder='Write a comment...'
+                className='px-4'
+                {...formCreateComment.getInputProps('content')}
+              />
+            </Card.Section>
+            <Group justify='space-between'>
+              <ActionIcon
+                type='submit'
+                variant='subtle'
+                color='dark'
+                disabled={formCreateComment.getInputProps('content').value === ''}
+              >
+                <IconSend2 style={{ width: rem(60), height: rem(60) }} stroke={1.5} />
+              </ActionIcon>
+            </Group>
+          </Card>
+        </form>
+        <div className='mt-4'>
+          {comments && <SimpleGrid cols={1}>{items}</SimpleGrid>}
+          <Pagination
+            total={data.length}
+            value={activePage}
+            onChange={setActivePage}
+            mt='md'
+            className='flex justify-center '
+            withEdges
+          />
+        </div>
       </div>
     </div>
   )

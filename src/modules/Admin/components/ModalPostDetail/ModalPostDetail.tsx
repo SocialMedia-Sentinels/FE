@@ -33,7 +33,7 @@ import CardComment from 'src/modules/Client/components/CardComment/CardComment'
 import Swal from 'sweetalert2'
 import { useNavigate } from 'react-router-dom'
 import path from 'src/modules/Share/constants/path'
-import { AdminDeletePostCommandHandler } from '../../services/deletePost.command-handler'
+import { AdminDeletePostCommandHandler } from '../../services/adminDeletePost.command-handler'
 
 interface Props {
   post: Post

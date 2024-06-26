@@ -65,6 +65,7 @@ const ClientRegisterForm = ({ formRegister, handleSubmit, userRegisterCommandHan
           placeholder='Select your location'
           data={dataLocation}
           onChange={(value) => formRegister.setFieldValue('location', value)}
+          {...formRegister.getInputProps('location')}
         />
         <DatePickerInput
           mt='sm'

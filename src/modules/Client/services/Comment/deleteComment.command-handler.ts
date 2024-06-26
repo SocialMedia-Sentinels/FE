@@ -1,22 +1,24 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import adminService from './admin.service'
+import commentService from './comment.service'
 
-class AdminDeletePostCommandHandler {
+class DeleteCommentCommandHandler {
   private _queryClient
   private _deletePostMutation
 
   constructor() {
     this._queryClient = useQueryClient()
     this._deletePostMutation = useMutation({
-      mutationFn: (post_id: string) => adminService.deletePost(post_id)
+      mutationFn: (comment_id: string) => commentService.deleteComment(comment_id)
     })
   }
 
-  handle = (post_id: string, handleSuccess: any, handleError: any) => {
-    this._deletePostMutation.mutate(post_id, {
+  handle = (comment_id: string, handleSuccess: any, handleError: any) => {
+    this._deletePostMutation.mutate(comment_id, {
       onSuccess: () => {
         this._queryClient.invalidateQueries({
-          queryKey: ['posts']
+          queryKey: ['comments']
         })
         handleSuccess()
       },
@@ -31,4 +33,4 @@ class AdminDeletePostCommandHandler {
   }
 }
 
-export { AdminDeletePostCommandHandler }
+export { DeleteCommentCommandHandler }

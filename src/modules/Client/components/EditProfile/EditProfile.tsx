@@ -8,6 +8,8 @@ import { z } from 'zod'
 import { toast } from 'react-toastify'
 import { UpdateMeCommandHandler } from '../../services'
 import { dataLocation } from 'src/modules/Share/constants/data'
+import { useNavigate } from 'react-router-dom'
+import path from 'src/modules/Share/constants/path'
 
 interface Props {
   handleCloseModal: () => void
@@ -15,6 +17,7 @@ interface Props {
   updateMeCommandHandler: UpdateMeCommandHandler
 }
 const EditProfile = ({ handleCloseModal, profile, updateMeCommandHandler }: Props) => {
+  const navigate = useNavigate()
   const schema = z.object({
     username: z.string().min(5, { message: 'Username should have at least 5 letters' }),
     bio: z.string().max(200, { message: 'Bio must be from 1 to 200 characters' }),
@@ -26,7 +29,7 @@ const EditProfile = ({ handleCloseModal, profile, updateMeCommandHandler }: Prop
       date_of_birth: new Date(profile.date_of_birth),
       bio: profile.bio,
       location: profile.location,
-      avatar: profile.avatar
+      phone_number: profile.phone_number
     },
     validate: zodResolver(schema)
   })
@@ -47,6 +50,10 @@ const EditProfile = ({ handleCloseModal, profile, updateMeCommandHandler }: Prop
       data,
       () => {
         handleCloseModal()
+        if (data.username) {
+          navigate(`${path.profile}/${data.username}`)
+        }
+        toast.success(`Profile updated successfully`)
       },
       (error: any) => {
         toast.error(error.response?.data?.message)
@@ -90,6 +97,12 @@ const EditProfile = ({ handleCloseModal, profile, updateMeCommandHandler }: Prop
             label='Bio'
             placeholder='Bio'
             {...formEditProfile.getInputProps('bio')}
+          />
+          <TextInput
+            mt={'sm'}
+            label='Phone number'
+            placeholder='Enter your phone number'
+            {...formEditProfile.getInputProps('phone_number')}
           />
           <DatePickerInput
             label='Date of Birth'

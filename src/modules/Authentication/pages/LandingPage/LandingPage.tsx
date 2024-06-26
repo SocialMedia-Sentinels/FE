@@ -49,7 +49,7 @@ const LandingPage = () => {
       date_of_birth: new Date(),
       location: '',
       phone_number: '',
-      gender: 0
+      gender: ''
     },
     validate: {
       email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Email is required !'),
@@ -65,7 +65,9 @@ const LandingPage = () => {
       phone_number: (value) =>
         /^[0-9]{10}$/.test(value)
           ? null
-          : 'Phone number is required and must be a valid 10-digit number!'
+          : 'Phone number is required and must be a valid 10-digit number!',
+      location: (value) => (value.length > 0 ? null : 'Location is required !'),
+      gender: (value) => (value.length > 0 ? null : 'Gender is required!')
     }
   })
   const userRegisterCommandHandler = new UserRegisterCommandHandler()
@@ -83,7 +85,9 @@ const LandingPage = () => {
           password: error.response.data.errors.password?.msg,
           confirm_password: error.response.data.errors.confirm_password?.msg,
           username: error.response.data.errors.username?.msg,
-          date_of_birth: error.response.data.errors.date_of_birth?.msg
+          date_of_birth: error.response.data.errors.date_of_birth?.msg,
+          location: error.response.data.errors.location?.msg,
+          phone_number: error.response.data.errors.phone_number?.msg
         })
       }
     )

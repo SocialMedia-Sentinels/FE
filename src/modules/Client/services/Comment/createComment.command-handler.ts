@@ -15,7 +15,7 @@ class CreateCommentCommandHandler {
     })
   }
 
-  handle = (data: CreateCommentTypeBody, handleSuccess: any, handleError: any) => {
+  handle = async (data: CreateCommentTypeBody, handleSuccess: any, handleError: any) => {
     this._createCommentMutation.mutate(data, {
       onSuccess: () => {
         this._queryClient.invalidateQueries({

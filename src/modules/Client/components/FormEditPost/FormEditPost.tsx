@@ -17,14 +17,18 @@ interface Props {
   post: NewFeed
 }
 const FormEditPost = ({ post }: Props) => {
-  const [showImageUpload] = useState<boolean>(post.medias[0].type === 0)
+  console.log(post)
+
+  const [showImageUpload] = useState<boolean>(post.medias.length > 0 && post.medias[0].type === 0)
   const [selectedImages] = useState<string[]>(
-    post.medias[0].type === 0 ? post.medias.map((media) => media.url) : []
+    post.medias.length > 0 && post.medias[0].type === 0 ? post.medias.map((media) => media.url) : []
   )
 
-  const [selectedVideo] = useState<string>(post.medias[0].type === 1 ? post.medias[0].url : '')
+  const [selectedVideo] = useState<string>(
+    post.medias.length > 0 && post.medias[0].type === 1 ? post.medias[0].url : ''
+  )
 
-  const [showVideoUpload] = useState<boolean>(post.medias[0].type === 1)
+  const [showVideoUpload] = useState<boolean>(post.medias.length > 0 && post.medias[0].type === 1)
 
   const formEditPost: UseFormReturnType<FormValues> = useForm<FormValues>({
     initialValues: {
