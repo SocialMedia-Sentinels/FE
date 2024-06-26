@@ -120,7 +120,6 @@ const FormEditPost = ({ post, closeModal }: Props) => {
             closeModal()
             setSelectedImages([])
             setSelectedFilesImage([])
-            window.location.reload()
           },
           (error: any) => {
             toast.error(error)
@@ -135,7 +134,6 @@ const FormEditPost = ({ post, closeModal }: Props) => {
             closeModal()
             setSelectedVideo('')
             setSelectedFileVideo([])
-            window.location.reload()
           },
           (error: any) => {
             toast.error(error)
@@ -147,7 +145,6 @@ const FormEditPost = ({ post, closeModal }: Props) => {
           () => {
             formEditPost.reset()
             closeModal()
-            window.location.reload()
           },
           (error: any) => {
             toast.error(error.response.data.message)
