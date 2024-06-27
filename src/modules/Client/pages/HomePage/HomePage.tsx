@@ -155,10 +155,10 @@ const HomePage = () => {
             </Menu.Target>
             <Menu.Dropdown>
               <Menu.Item
-                onClick={() => handleSortChange('new')}
+                onClick={() => handleSortChange('newest')}
                 leftSection={<IconArrowBigUpLine style={{ width: rem(14), height: rem(14) }} />}
               >
-                News
+                Newest
               </Menu.Item>
               <Menu.Item
                 onClick={() => handleSortChange('hot')}
@@ -178,6 +178,7 @@ const HomePage = () => {
                 <b>Yay! You have seen it all</b>
               </p>
             }
+            className='!overflow-visible'
             loader={<div className='text-center'>Loading...</div>}
           >
             {posts.map((post, index) => (

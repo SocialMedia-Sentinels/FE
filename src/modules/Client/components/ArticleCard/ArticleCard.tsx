@@ -1,3 +1,4 @@
+/* eslint-disable import/named */
 /* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable react/jsx-key */
 import {
@@ -32,7 +33,9 @@ import { formatTimeToReadable } from 'src/modules/Share/utils'
 import path from 'src/modules/Share/constants/path'
 import { useDisclosure } from '@mantine/hooks'
 import FormShare from '../FormShare/FormShare'
-import { useNavigate } from 'react-router-dom'
+import { createSearchParams, URLSearchParamsInit, useNavigate } from 'react-router-dom'
+import useQuerySearchConfig from '../../hooks/useQuerySearchConfig'
+import { isEmpty, omitBy } from 'lodash'
 
 interface Props {
   post: NewFeed
@@ -53,6 +56,22 @@ const ArticleCard = ({
   const navigate = useNavigate()
   const showPost = (post_id: string) => {
     navigate(`/post_detail/${post_id}`)
+  }
+  const querySearchConfig = useQuerySearchConfig()
+
+  const handleClickHashtag = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    event.preventDefault()
+    const config = {
+      ...querySearchConfig,
+      page: 1,
+      content: '',
+      hashtag: event.currentTarget.textContent,
+      limit: querySearchConfig.limit || 10
+    }
+    navigate({
+      pathname: path.search,
+      search: createSearchParams(omitBy(config, isEmpty) as URLSearchParamsInit).toString()
+    })
   }
   return (
     <Card withBorder padding='md' radius='md' className='my-10'>
@@ -200,7 +219,13 @@ const ArticleCard = ({
       <Group my={'sm'}>
         {post.hashtags.length != 0 &&
           post.hashtags.map((hashtag, index) => (
-            <Badge w='fit-content' variant='light' key={index}>
+            <Badge
+              w='fit-content'
+              variant='light'
+              key={index}
+              className='hover:cursor-pointer'
+              onClick={handleClickHashtag}
+            >
               {hashtag.name}
             </Badge>
           ))}

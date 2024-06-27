@@ -18,6 +18,7 @@ const SearchPage = () => {
   const [pageNumber, setPageNumber] = useState(1)
   const queryParams = new URLSearchParams(location.search)
   const content = queryParams.get('content') || undefined
+  const hashtag = queryParams.get('hashtag') || undefined
   const navigate = useNavigate()
   const onClickGoHome = () => {
     navigate(path.home)
@@ -29,7 +30,8 @@ const SearchPage = () => {
     refetch
   } = useQuery({
     queryKey: ['search', { page: pageNumber, limit: 10 }],
-    queryFn: () => searchService.search({ page: pageNumber.toString(), limit: '10', content }),
+    queryFn: () =>
+      searchService.search({ page: pageNumber.toString(), limit: '10', content, hashtag }),
     keepPreviousData: true,
     onSuccess: (data) => {
       setPosts((prevPosts) => [...prevPosts, ...data.data.result])
@@ -45,7 +47,7 @@ const SearchPage = () => {
     setPageNumber(1)
     setPosts([])
     refetch()
-  }, [content, refetch])
+  }, [content, hashtag, refetch])
 
   if (isLoading) return <Loader size={50} />
 

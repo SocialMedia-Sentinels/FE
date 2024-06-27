@@ -50,21 +50,26 @@ export default function Header() {
   }
   const querySearchConfig = useQuerySearchConfig()
 
-  const [searchQuery, setSearchQuery] = useState<string>('')
-
+  const [searchContentQuery, setSearchContentQuery] = useState<string>('')
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    if (searchContentQuery.trim() === '') {
+      toast.error('Search query cannot be empty')
+      return
+    }
     const config = {
       ...querySearchConfig,
       page: 1,
-      content: searchQuery,
+      content: searchContentQuery,
       limit: querySearchConfig.limit || 10
     }
+    console.log('config', config)
+
     navigate({
       pathname: path.search,
       search: createSearchParams(omitBy(config, isEmpty) as URLSearchParamsInit).toString()
     })
-    setSearchQuery('')
+    setSearchContentQuery('')
   }
 
   const handleNavigateToProfile = () => {
@@ -87,8 +92,8 @@ export default function Header() {
             </div>
             <input
               name='search'
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              value={searchContentQuery}
+              onChange={(e) => setSearchContentQuery(e.target.value)}
               className='block w-[200px] sm:w-[400px] lg:w-full appearance-none bg-white border border-gray-300 rounded-md py-2 px-3 text-sm focus:outline-none leading-5 focus:border-[#26C6DA] focus:rounded-lg !pl-8 text-gray-700'
               type='text'
               placeholder='Search'

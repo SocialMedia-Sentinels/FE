@@ -370,7 +370,7 @@ const ModalPostDetail = ({ post, onClose }: Props) => {
                 <Text className='font-medium text-[#3e3f5e] mb-4'>{post.post_parent.content}</Text>
                 <div className='flex flex-row justify-center items-center gap-4 mb-4'>
                   {post.post_parent.medias &&
-                    post.post_parent.medias[0].type == 0 &&
+                    post.post_parent.medias[0]?.type == 0 &&
                     post.post_parent.medias.length > 0 &&
                     post.post_parent.medias.map((image, index) => {
                       return (
@@ -383,7 +383,7 @@ const ModalPostDetail = ({ post, onClose }: Props) => {
                       )
                     })}
                   {post.post_parent.medias &&
-                    post.post_parent.medias[0].type == 1 &&
+                    post.post_parent.medias[0]?.type == 1 &&
                     post.post_parent.medias.length > 0 &&
                     post.post_parent.medias.map((video, index) => {
                       return (

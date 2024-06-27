@@ -132,6 +132,7 @@ const ListPost = ({ username, isMe, profileUser }: Props) => {
           </p>
         }
         loader={<div>loading...</div>}
+        className='!overflow-visible'
       >
         {posts.map((post, index) => (
           <ArticleCard
