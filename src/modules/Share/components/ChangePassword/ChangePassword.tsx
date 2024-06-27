@@ -29,6 +29,7 @@ const ChangePassword = ({ handleCloseModal }: Props) => {
     userChangePasswordCommandHandler.handle(
       data,
       () => {
+        toast.success('Change password successfully')
         handleCloseModal()
       },
       (error: any) => {
@@ -77,7 +78,12 @@ const ChangePassword = ({ handleCloseModal }: Props) => {
             placeholder='Confirm Password'
             {...formChangePassword.getInputProps('confirm_password')}
           />
-          <Button type='submit' variant='filled' className='bg-[#049FEC] mt-6'>
+          <Button
+            loading={userChangePasswordCommandHandler.isLoading()}
+            type='submit'
+            variant='filled'
+            className='bg-[#049FEC] mt-6'
+          >
             Submit
           </Button>
         </div>

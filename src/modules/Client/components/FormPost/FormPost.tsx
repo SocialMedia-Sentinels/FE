@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 /* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable jsx-a11y/interactive-supports-focus */
@@ -59,7 +60,7 @@ const FormPost = ({ profileUser, open, opened, close }: Props) => {
           setSelectedImages([])
           setSelectedFilesImage([])
           close()
-          toast.success('Create post successfully')
+          window.location.reload()
         },
         (error: any) => {
           toast.error(error.response.data.message)
@@ -73,7 +74,6 @@ const FormPost = ({ profileUser, open, opened, close }: Props) => {
         data,
         selectedFileVideo,
         () => {
-          toast.success('Create post successfully')
           formCreatePost.reset()
           setSelectedVideo('')
           setSelectedFileVideo([])
@@ -94,7 +94,6 @@ const FormPost = ({ profileUser, open, opened, close }: Props) => {
           formCreatePost.reset()
           close()
           window.location.reload()
-          toast.success('Create post successfully')
         },
         (error: any) => {
           toast.error(error.response.data.message)
@@ -127,6 +126,17 @@ const FormPost = ({ profileUser, open, opened, close }: Props) => {
     }
   }
   const onSelectFileVideo = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files as FileList)
+
+    const maxSize = 50 * 1024 * 1024
+
+    for (let file of files) {
+      if (file.size > maxSize) {
+        toast.error('The file you selected exceeds the 50MB limit. Please choose a smaller file.')
+        event.target.value = ''
+        return
+      }
+    }
     setSelectedFileVideo(Array.from(event.target.files as FileList))
     if (event.target.files) {
       setSelectedVideo(URL.createObjectURL(event.target.files[0] as File))
@@ -153,6 +163,10 @@ const FormPost = ({ profileUser, open, opened, close }: Props) => {
           setSelectedFilesImage([])
           setSelectedVideo('')
           setSelectedFileVideo([])
+          formCreatePost.setFieldValue('content', '')
+          formCreatePost.setFieldValue('hashtags', [])
+          formCreatePost.setFieldValue('audience', 0)
+          setSwitchLabel('Everyone')
         }}
         title='Create Post'
         centered
@@ -279,8 +293,7 @@ const FormPost = ({ profileUser, open, opened, close }: Props) => {
 
                   <input
                     type='file'
-                    name='images'
-                    multiple
+                    name='videos'
                     onChange={onSelectFileVideo}
                     accept='video/mp4, video/quicktime'
                     className='hidden'

@@ -34,7 +34,7 @@ const TicketPage = () => {
         <title>Tickets Management</title>
         <meta name='description' content='This is tickets management page of the project' />
       </Helmet>
-      <div className='px-10 py-10'>
+      <div className='px-10 py-10 w-full'>
         {data && (
           <LoadingOverlay
             visible={true}
@@ -50,9 +50,7 @@ const TicketPage = () => {
             ))}
           </div>
         ) : (
-          <div className='w-full'>
-            <NothingFound />
-          </div>
+          <NothingFound />
         )}
         <Pagination
           total={dataTicket.length}

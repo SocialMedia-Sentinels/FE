@@ -1,9 +1,8 @@
-import { Container, Title, Text, Group } from '@mantine/core'
-import { Button } from '@mui/material'
+import { Button, Container, Group, Text, Title } from '@mantine/core'
 import { useNavigate } from 'react-router-dom'
 import path from '../../constants/path'
 
-const NothingFound = () => {
+const PostOfUserBanned = () => {
   const navigate = useNavigate()
 
   const handleGoBack = () => {
@@ -25,8 +24,8 @@ const NothingFound = () => {
         <div className='py-[220px] relative z-10'>
           <Title className='text-center font-black text-[38px]'>Nothing to see here</Title>
           <Text c='dimmed' size='lg' ta='center' className='max-w-[540px] m-auto'>
-            Page you are trying to open does not exist. You may have mistyped the address, or the
-            page has been moved to another URL. If you think this is an error contact support.
+            Your post cannot be displayed because the post owner account is currently locked. Please
+            try again later
           </Text>
           <Group justify='center'>
             <Button className='bg-[#5AB2FF]' onClick={handleGoBack}>
@@ -39,4 +38,4 @@ const NothingFound = () => {
   )
 }
 
-export default NothingFound
+export default PostOfUserBanned

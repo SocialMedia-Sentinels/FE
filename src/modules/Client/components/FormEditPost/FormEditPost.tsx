@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 /* eslint-disable react/jsx-key */
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -34,8 +35,6 @@ interface Props {
   closeModal: () => void
 }
 const FormEditPost = ({ post, closeModal }: Props) => {
-  console.log(post)
-
   const [showImageUpload, setShowImageUpload] = useState<boolean>(
     post.medias.length > 0 && post.medias[0].type === 0
   )
@@ -82,6 +81,17 @@ const FormEditPost = ({ post, closeModal }: Props) => {
     }
   }
   const onSelectFileVideo = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(event.target.files as FileList)
+
+    const maxSize = 50 * 1024 * 1024
+
+    for (let file of files) {
+      if (file.size > maxSize) {
+        toast.error('The file you selected exceeds the 50MB limit. Please choose a smaller file.')
+        event.target.value = ''
+        return
+      }
+    }
     setSelectedFileVideo(Array.from(event.target.files as FileList))
     if (event.target.files) {
       const videoUrl = URL.createObjectURL(event.target.files[0] as File)
@@ -111,7 +121,9 @@ const FormEditPost = ({ post, closeModal }: Props) => {
       content: (value) => (value.length > 0 ? null : 'Content is required!')
     }
   })
-  const [switchLabel, setSwitchLabel] = useState<string>('Everyone')
+  const [switchLabel, setSwitchLabel] = useState<string>(
+    post.audience === 1 ? 'Follower' : 'Everyone'
+  )
   const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const isChecked = event.currentTarget.checked
     formEditPost.setFieldValue('audience', isChecked ? 1 : 0)
@@ -171,11 +183,7 @@ const FormEditPost = ({ post, closeModal }: Props) => {
       toast.error('Failed to update post')
     }
   }
-
-  // console.log('selectedFilesImage', selectedFilesImage)
-
-  // console.log('selectedImages', selectedImages)
-  // console.log('selectedFilesImage', selectedFilesImage)
+  console.log('audience', formEditPost.values.audience)
 
   return (
     <form className='flex flex-col gap-4' onSubmit={formEditPost.onSubmit(handleEditPost)}>
@@ -380,7 +388,7 @@ const FormEditPost = ({ post, closeModal }: Props) => {
 
               <input
                 type='file'
-                name='images'
+                name='videos'
                 multiple
                 onChange={onSelectFileVideo}
                 accept='video/mp4, video/quicktime'
@@ -417,7 +425,12 @@ const FormEditPost = ({ post, closeModal }: Props) => {
         value={formEditPost.values.hashtags}
         onChange={handleTagsChange}
       />
-      <Button className='w-full !py-1 bg-[#3572EF]' type='submit' variant='filled'>
+      <Button
+        loading={updatePostCommandHandler.isLoading()}
+        className='w-full !py-1 bg-[#3572EF]'
+        type='submit'
+        variant='filled'
+      >
         Update
       </Button>
     </form>

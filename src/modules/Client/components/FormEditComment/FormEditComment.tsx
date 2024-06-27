@@ -45,7 +45,13 @@ const FormEditComment = ({ comment, setIsEdit }: Props) => {
           />
         </Card.Section>
         <Group justify='space-between'>
-          <ActionIcon type='submit' variant='subtle' color='dark'>
+          <ActionIcon
+            type='submit'
+            variant='subtle'
+            color='dark'
+            disabled={formEditComment.getInputProps('content').value === ''}
+            loading={updateCommentCommandHandler.isLoading()}
+          >
             <IconSend2 style={{ width: rem(60), height: rem(60) }} stroke={1.5} />
           </ActionIcon>
         </Group>

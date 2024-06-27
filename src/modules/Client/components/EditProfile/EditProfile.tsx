@@ -130,7 +130,12 @@ const EditProfile = ({ handleCloseModal, profile, updateMeCommandHandler }: Prop
             value={formEditProfile.values.location}
             onChange={(value) => formEditProfile.setFieldValue('location', value)}
           />
-          <Button type='submit' variant='filled' className='bg-[#049FEC] mt-6'>
+          <Button
+            loading={updateMeCommandHandler.isLoading()}
+            type='submit'
+            variant='filled'
+            className='bg-[#049FEC] mt-6'
+          >
             Submit
           </Button>
         </div>

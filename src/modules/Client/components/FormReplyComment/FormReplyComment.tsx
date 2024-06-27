@@ -52,6 +52,7 @@ const FormReplyComment = ({ comment, setIsReply }: Props) => {
           variant='subtle'
           color='dark'
           disabled={formReplyComment.getInputProps('content').value === ''}
+          loading={createCommentCommandHandle.isLoading()}
         >
           <IconSend2 style={{ width: rem(60), height: rem(60) }} stroke={1.5} />
         </ActionIcon>

@@ -269,12 +269,14 @@ const UserProfilePage = () => {
                   <FormUploadAvatar
                     handleCloseModalUploadAvatar={handleCloseModalUploadAvatar}
                     handleChangeAvatar={handleChangeAvatar}
+                    isLoading={updateMeCommandHandler.isLoading()}
                   />
                 </ModalCustom>
                 <ModalCustom isOpenModal={isOpenModalUploadCoverPhoto}>
                   <FormUploadAvatar
                     handleCloseModalUploadAvatar={handleCloseModalUploadCoverPhoto}
                     handleChangeAvatar={handleChangeCoverPhoto}
+                    isLoading={updateMeCommandHandler.isLoading()}
                   />
                 </ModalCustom>
                 <div className='flex flex-col '>

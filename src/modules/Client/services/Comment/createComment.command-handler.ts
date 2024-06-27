@@ -28,6 +28,10 @@ class CreateCommentCommandHandler {
       }
     })
   }
+
+  isLoading() {
+    return this._createCommentMutation.isLoading
+  }
 }
 
 export { CreateCommentCommandHandler }

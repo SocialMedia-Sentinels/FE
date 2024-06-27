@@ -4,12 +4,16 @@ import { Helmet } from 'react-helmet-async'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import ArticleCard from '../../components/ArticleCard'
 import { NewFeed } from '../../interfaces/Post'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import searchService from '../../services/Search/search.service'
 import { Button, Loader } from '@mantine/core'
 import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 import path from 'src/modules/Share/constants/path'
+import { LikePostCommandHandler } from '../../services/Like'
+import likeService from '../../services/Like/like.service'
+import bookmarkService from '../../services/Bookmark/bookmark.service'
+import { BookmarkPostCommandHandler } from '../../services/Bookmark'
 
 const SearchPage = () => {
   // const getListPostBySearch = new GetListPostBySearchQuery()
@@ -22,6 +26,80 @@ const SearchPage = () => {
   const navigate = useNavigate()
   const onClickGoHome = () => {
     navigate(path.home)
+  }
+
+  const likePostCommandHandle = new LikePostCommandHandler()
+  const handleLikePost = (post_id: string) => {
+    likePostCommandHandle.handle(
+      { post_id },
+      () => {
+        setPosts((prevPosts) =>
+          prevPosts.map((post) =>
+            post._id === post_id ? { ...post, isLike: true, likes: post.likes + 1 } : post
+          )
+        )
+      },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (error: any) => {
+        console.log(error)
+      }
+    )
+  }
+  const unLikePostMutation = useMutation((post_id: string) => likeService.unLikePost(post_id), {
+    onSuccess: (_data, post_id) => {
+      setPosts((prevPosts) =>
+        prevPosts.map((post) =>
+          post._id === post_id ? { ...post, isLike: false, likes: post.likes - 1 } : post
+        )
+      )
+    },
+    onError: (error) => {
+      console.log(error)
+    }
+  })
+  const handleUnLikePost = (post_id: string) => {
+    unLikePostMutation.mutate(post_id)
+  }
+  const bookmarkPostCommandHandle = new BookmarkPostCommandHandler()
+  const handleBookmarkPost = (post_id: string) => {
+    bookmarkPostCommandHandle.handle(
+      { post_id },
+      () => {
+        setPosts((prevPosts) =>
+          prevPosts.map((post) =>
+            post._id === post_id
+              ? { ...post, isBookmark: true, bookmarks: post.bookmarks + 1 }
+              : post
+          )
+        )
+      },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (error: any) => {
+        console.log(error)
+      }
+    )
+  }
+
+  const unBookmarkPostMutation = useMutation(
+    (post_id: string) => bookmarkService.unBookmarkPost(post_id),
+    {
+      onSuccess: (_data, post_id) => {
+        setPosts((prevPosts) =>
+          prevPosts.map((post) =>
+            post._id === post_id
+              ? { ...post, isBookmark: false, bookmarks: post.bookmarks - 1 }
+              : post
+          )
+        )
+      },
+      onError: (error) => {
+        console.log(error)
+      }
+    }
+  )
+
+  const handleUnBookmarkPost = (post_id: string) => {
+    unBookmarkPostMutation.mutate(post_id)
   }
   const {
     data: res,
@@ -64,10 +142,18 @@ const SearchPage = () => {
               dataLength={posts.length}
               next={fetchMoreData}
               hasMore={posts.length < (res?.data.total || 0)}
+              className='!overflow-visible'
               loader={<div className='text-center'>Loading...</div>}
             >
               {posts.map((post, index) => (
-                <ArticleCard key={index} post={post} />
+                <ArticleCard
+                  key={index}
+                  post={post}
+                  handleLikePost={handleLikePost}
+                  handleUnLikePost={handleUnLikePost}
+                  handleBookmarkPost={handleBookmarkPost}
+                  handleUnBookmarkPost={handleUnBookmarkPost}
+                />
               ))}
             </InfiniteScroll>
           </div>

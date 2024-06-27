@@ -1,3 +1,4 @@
+/* eslint-disable import/named */
 /* eslint-disable react/jsx-key */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable jsx-a11y/media-has-caption */
@@ -43,7 +44,7 @@ import '@mantine/carousel/styles.css'
 import { LikePostCommandHandler, UnLikePostCommandHandler } from '../../services/Like'
 import { BookmarkPostCommandHandler, UnBookmarkPostCommandHandler } from '../../services/Bookmark'
 import { getAccessTokenFromLocalStorage } from 'src/modules/Authentication/utils'
-import { useNavigate, useParams } from 'react-router-dom'
+import { createSearchParams, URLSearchParamsInit, useNavigate, useParams } from 'react-router-dom'
 import FormShare from '../FormShare/FormShare'
 import { useDisclosure } from '@mantine/hooks'
 import { CreateCommentCommandHandler } from '../../services/Comment'
@@ -56,6 +57,9 @@ import CardComment from '../CardComment/CardComment'
 import Swal from 'sweetalert2'
 import { DeletePostCommandHandler } from '../../services'
 import FormEditPost from '../FormEditPost/FormEditPost'
+import useQuerySearchConfig from '../../hooks/useQuerySearchConfig'
+import { isEmpty, omitBy } from 'lodash'
+import PostOfUserBanned from 'src/modules/Share/components/PostOfUserBanned/PostOfUserBanned'
 
 interface Props {
   post: NewFeed
@@ -73,7 +77,22 @@ const PostDetail = ({ post, deletePostCommandHandler }: Props) => {
   const [activePage, setActivePage] = useState(1)
 
   const navigate = useNavigate()
+  const querySearchConfig = useQuerySearchConfig()
 
+  const handleClickHashtag = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    event.preventDefault()
+    const config = {
+      ...querySearchConfig,
+      page: 1,
+      content: '',
+      hashtag: event.currentTarget.textContent,
+      limit: querySearchConfig.limit || 10
+    }
+    navigate({
+      pathname: path.search,
+      search: createSearchParams(omitBy(config, isEmpty) as URLSearchParamsInit).toString()
+    })
+  }
   const { post_id } = useParams()
   const token = getAccessTokenFromLocalStorage()
   const parseJwt = (token: string) => {
@@ -199,274 +218,309 @@ const PostDetail = ({ post, deletePostCommandHandler }: Props) => {
   }
 
   return (
-    <div className=''>
-      <Card withBorder padding='md' radius='md' className=''>
-        <Group className='mb-2' justify='space-between'>
-          <Group>
-            <Avatar src={post.user.avatar} radius='lg' />
-            <div className='inline-grid'>
-              <Text fw={500} component='a' href={`${path.profile}/${post.user.username}`}>
-                {post.user.username}
-              </Text>
-              {post.type == 0 ? (
-                <Text fz='xs' c='dimmed' className='flex justify-center items-center gap-1'>
-                  posted {formatTimeToReadable(post.created_at)}
-                  {post.audience == 0 ? (
-                    <IconWorld className='w-4 h-4' />
+    <div>
+      {post.user.verify == 2 ? (
+        <PostOfUserBanned />
+      ) : (
+        <div className=''>
+          <Card withBorder padding='md' radius='md' className=''>
+            <Group className='mb-2' justify='space-between'>
+              <Group>
+                <Avatar src={post.user.avatar} radius='lg' />
+                <div className='inline-grid'>
+                  <Text fw={500} component='a' href={`${path.profile}/${post.user.username}`}>
+                    {post.user.username}
+                  </Text>
+                  {post.type == 0 ? (
+                    <Text fz='xs' c='dimmed' className='flex justify-center items-center gap-1'>
+                      posted {formatTimeToReadable(post.created_at)}
+                      {post.audience == 0 ? (
+                        <IconWorld className='w-4 h-4' />
+                      ) : (
+                        <IconUsers className='w-4 h-4' />
+                      )}
+                    </Text>
                   ) : (
-                    <IconUsers className='w-4 h-4' />
+                    <Text fz='xs' c='dimmed' className='flex justify-center items-center gap-1'>
+                      shared {formatTimeToReadable(post.created_at)}
+                      {post.audience == 0 ? (
+                        <IconWorld className='w-4 h-4' />
+                      ) : (
+                        <IconUsers className='w-4 h-4' />
+                      )}
+                    </Text>
                   )}
-                </Text>
-              ) : (
-                <Text fz='xs' c='dimmed' className='flex justify-center items-center gap-1'>
-                  shared {formatTimeToReadable(post.created_at)}
-                  {post.audience == 0 ? (
-                    <IconWorld className='w-4 h-4' />
-                  ) : (
-                    <IconUsers className='w-4 h-4' />
-                  )}
-                </Text>
+                </div>
+              </Group>
+              {post.user._id === JWTInfo.user_id && (
+                <Menu shadow='md' position='right-start'>
+                  <Menu.Target>
+                    <Button
+                      variant='transparent'
+                      size='xs'
+                      rightSection={
+                        <IconDotsVertical style={{ width: rem(14), height: rem(14) }} />
+                      }
+                      className='text-black font-medium'
+                    ></Button>
+                  </Menu.Target>
+                  <Menu.Dropdown>
+                    <Menu.Item
+                      leftSection={<IconEdit style={{ width: rem(14), height: rem(14) }} />}
+                      onClick={openFormEdit}
+                    >
+                      Edit
+                    </Menu.Item>
+                    <Menu.Item
+                      leftSection={<IconTrash style={{ width: rem(14), height: rem(14) }} />}
+                      onClick={() => handleDeletePost(post._id)}
+                    >
+                      Delete
+                    </Menu.Item>
+                  </Menu.Dropdown>
+                </Menu>
               )}
-            </div>
-          </Group>
-          {post.user._id === JWTInfo.user_id && (
-            <Menu shadow='md' position='right-start'>
-              <Menu.Target>
-                <Button
-                  variant='transparent'
-                  size='xs'
-                  rightSection={<IconDotsVertical style={{ width: rem(14), height: rem(14) }} />}
-                  className='text-black font-medium'
-                ></Button>
-              </Menu.Target>
-              <Menu.Dropdown>
-                <Menu.Item
-                  leftSection={<IconEdit style={{ width: rem(14), height: rem(14) }} />}
-                  onClick={openFormEdit}
-                >
-                  Edit
-                </Menu.Item>
-                <Menu.Item
-                  leftSection={<IconTrash style={{ width: rem(14), height: rem(14) }} />}
-                  onClick={() => handleDeletePost(post._id)}
-                >
-                  Delete
-                </Menu.Item>
-              </Menu.Dropdown>
-            </Menu>
-          )}
-        </Group>
-        <Spoiler maxHeight={100} my='xs' showLabel='Show more' hideLabel='Hide'>
-          {post.content}
-        </Spoiler>
-        {post.type == 1 && post.post_parent?._id && (
-          <Card
-            withBorder
-            padding='md'
-            radius='md'
-            className='hover:cursor-pointer hover:bg-[#F6F5F2]/70'
-            onClick={() => showPost(post.post_parent?._id as string)}
-          >
-            <Group className='mb-2'>
-              <Avatar src={post.post_parent.user?.avatar} radius='lg' />
-              <div className='inline-grid'>
-                <Text fw={500}>{post.post_parent.user?.username}</Text>
-                {post.post_parent.type == 0 ? (
-                  <Text fz='xs' c='dimmed' className='flex justify-center items-center gap-1'>
-                    posted {formatTimeToReadable(post.post_parent.created_at)}
-                    {post.audience == 0 ? (
-                      <IconWorld className='w-4 h-4' />
-                    ) : (
-                      <IconUsers className='w-4 h-4' />
-                    )}
-                  </Text>
-                ) : (
-                  <Text fz='xs' c='dimmed' className='flex justify-center items-center gap-1'>
-                    shared {formatTimeToReadable(post.post_parent.created_at)}
-                    {post.audience == 0 ? (
-                      <IconWorld className='w-4 h-4' />
-                    ) : (
-                      <IconUsers className='w-4 h-4' />
-                    )}
-                  </Text>
-                )}
-              </div>
             </Group>
-            <Text className='font-bold text-[#3e3f5e] mb-4'>{post.post_parent.content}</Text>
-            <div className='flex flex-row justify-center items-center gap-4 mb-4'>
-              {post.post_parent.medias &&
-                post.post_parent.medias[0]?.type == 0 &&
-                post.post_parent.medias.length > 0 &&
-                post.post_parent.medias.map((image, index) => {
-                  return (
-                    <BackgroundImage
-                      className='relative shadow-lg w-48 h-48 flex justify-end items-start'
-                      src={image.url}
-                      key={index}
-                      radius='sm'
-                    ></BackgroundImage>
-                  )
-                })}
-              {post.post_parent.medias &&
-                post.post_parent.medias[0]?.type == 1 &&
-                post.post_parent.medias.length > 0 &&
-                post.post_parent.medias.map((video, index) => {
-                  return (
-                    <Card.Section className='w-80 px-4 m-auto'>
-                      <video controls key={index}>
-                        <source src={video.url} type='video/mp4' />
-                      </video>
-                    </Card.Section>
-                  )
-                })}
-            </div>
+            <Spoiler maxHeight={100} my='xs' showLabel='Show more' hideLabel='Hide'>
+              {post.content}
+            </Spoiler>
+            {post.type == 1 && post.post_parent?._id && (
+              <Card
+                withBorder
+                padding='md'
+                radius='md'
+                className='hover:cursor-pointer hover:bg-[#F6F5F2]/70'
+                onClick={() => showPost(post.post_parent?._id as string)}
+              >
+                <Group className='mb-2'>
+                  <Avatar src={post.post_parent.user?.avatar} radius='lg' />
+                  <div className='inline-grid'>
+                    <Text fw={500}>{post.post_parent.user?.username}</Text>
+                    {post.post_parent.type == 0 ? (
+                      <Text fz='xs' c='dimmed' className='flex justify-center items-center gap-1'>
+                        posted {formatTimeToReadable(post.post_parent.created_at)}
+                        {post.audience == 0 ? (
+                          <IconWorld className='w-4 h-4' />
+                        ) : (
+                          <IconUsers className='w-4 h-4' />
+                        )}
+                      </Text>
+                    ) : (
+                      <Text fz='xs' c='dimmed' className='flex justify-center items-center gap-1'>
+                        shared {formatTimeToReadable(post.post_parent.created_at)}
+                        {post.audience == 0 ? (
+                          <IconWorld className='w-4 h-4' />
+                        ) : (
+                          <IconUsers className='w-4 h-4' />
+                        )}
+                      </Text>
+                    )}
+                  </div>
+                </Group>
+                <Text className='font-bold text-[#3e3f5e] mb-4'>{post.post_parent.content}</Text>
+                <div className='flex flex-row justify-center items-center gap-4 mb-4'>
+                  {post.post_parent.medias &&
+                    post.post_parent.medias[0]?.type == 0 &&
+                    post.post_parent.medias.length > 0 &&
+                    post.post_parent.medias.map((image, index) => {
+                      return (
+                        <BackgroundImage
+                          className='relative shadow-lg w-48 h-48 flex justify-end items-start'
+                          src={image.url}
+                          key={index}
+                          radius='sm'
+                        ></BackgroundImage>
+                      )
+                    })}
+                  {post.post_parent.medias &&
+                    post.post_parent.medias[0]?.type == 1 &&
+                    post.post_parent.medias.length > 0 &&
+                    post.post_parent.medias.map((video, index) => {
+                      return (
+                        <Card.Section className='w-80 px-4 m-auto'>
+                          <video controls key={index}>
+                            <source src={video.url} type='video/mp4' />
+                          </video>
+                        </Card.Section>
+                      )
+                    })}
+                </div>
+                <Group>
+                  {post.post_parent.hashtags &&
+                    post.post_parent.hashtags.length > 0 &&
+                    post.post_parent.hashtags.map((hashtag, index) => (
+                      <Badge w='fit-content' variant='light' key={index}>
+                        {hashtag.name}
+                      </Badge>
+                    ))}
+                </Group>
+              </Card>
+            )}
+            {post.type == 1 && !post.post_parent?._id && (
+              <Card
+                withBorder
+                padding='md'
+                radius='md'
+                className='hover:cursor-pointer hover:bg-[#F6F5F2]/70'
+              >
+                <Text className='text-center'>Post not found</Text>
+              </Card>
+            )}
             <Group>
-              {post.post_parent.hashtags &&
-                post.post_parent.hashtags.length > 0 &&
-                post.post_parent.hashtags.map((hashtag, index) => (
-                  <Badge w='fit-content' variant='light' key={index}>
+              {post.hashtags.length != 0 &&
+                post.hashtags.map((hashtag, index) => (
+                  <Badge
+                    w='fit-content'
+                    variant='light'
+                    key={index}
+                    className='hover:cursor-pointer'
+                    onClick={handleClickHashtag}
+                  >
                     {hashtag.name}
                   </Badge>
                 ))}
             </Group>
-          </Card>
-        )}
-        {post.type == 1 && !post.post_parent?._id && (
-          <Card
-            withBorder
-            padding='md'
-            radius='md'
-            className='hover:cursor-pointer hover:bg-[#F6F5F2]/70'
-          >
-            <Text className='text-center'>Post not found</Text>
-          </Card>
-        )}
-        <Group>
-          {post.hashtags.length != 0 &&
-            post.hashtags.map((hashtag, index) => (
-              <Badge w='fit-content' variant='light' key={index}>
-                {hashtag.name}
-              </Badge>
-            ))}
-        </Group>
-        {post.medias.length != 0 && post.medias[0].type == 0 && (
-          <Card.Section className='px-4'>
-            <Carousel withIndicators height={400} slideGap='md' align='start' classNames={classes}>
-              {post.medias.map((image, index) => (
-                <Carousel.Slide key={index}>
-                  <Image src={image.url} radius='md' h={400} fit='contain' />
-                </Carousel.Slide>
-              ))}
-            </Carousel>
-          </Card.Section>
-        )}
-        {post.medias.length != 0 && post.medias[0].type == 1 && (
-          <Card.Section className='w-80 px-4 m-auto'>
-            {post.medias.map((video, index) => (
-              <video controls key={index}>
-                <source src={video.url} type='video/mp4' />
-              </video>
-            ))}
-          </Card.Section>
-        )}
-        <Card.Section className='mt-4 mb-[-5] mx-[-5] py-[10px] px-5'>
-          <Group gap={2}>
-            {post.isLike ? (
-              <ActionIcon variant='subtle' color='gray' onClick={() => handleUnLikePost(post._id)}>
-                <IconHeartFilled
-                  style={{ width: rem(60), height: rem(60) }}
-                  color={theme.colors.red[6]}
-                  stroke={1.5}
-                />
-              </ActionIcon>
-            ) : (
-              <ActionIcon variant='subtle' color='gray' onClick={() => handleLikePost(post._id)}>
-                <IconHeart
-                  style={{ width: rem(60), height: rem(60) }}
-                  color={theme.colors.red[6]}
-                  stroke={1.5}
-                />
-              </ActionIcon>
+            {post.medias.length != 0 && post.medias[0].type == 0 && (
+              <Card.Section className='px-4'>
+                <Carousel
+                  withIndicators
+                  height={400}
+                  slideGap='md'
+                  align='start'
+                  classNames={classes}
+                >
+                  {post.medias.map((image, index) => (
+                    <Carousel.Slide key={index}>
+                      <Image src={image.url} radius='md' h={400} fit='contain' />
+                    </Carousel.Slide>
+                  ))}
+                </Carousel>
+              </Card.Section>
             )}
-            {post.isBookmark ? (
-              <ActionIcon
-                variant='subtle'
-                color='gray'
-                onClick={() => handleUnBookmarkPost(post._id)}
-              >
-                <IconBookmarkFilled
-                  style={{ width: rem(60), height: rem(60) }}
-                  color={theme.colors.yellow[6]}
-                  stroke={1.5}
-                />
-              </ActionIcon>
-            ) : (
-              <ActionIcon
-                variant='subtle'
-                color='gray'
-                onClick={() => handleBookmarkPost(post._id)}
-              >
-                <IconBookmark
-                  style={{ width: rem(60), height: rem(60) }}
-                  color={theme.colors.yellow[6]}
-                  stroke={1.5}
-                />
-              </ActionIcon>
+            {post.medias.length != 0 && post.medias[0].type == 1 && (
+              <Card.Section className='w-80 px-4 m-auto'>
+                {post.medias.map((video, index) => (
+                  <video controls key={index}>
+                    <source src={video.url} type='video/mp4' />
+                  </video>
+                ))}
+              </Card.Section>
             )}
-            <ActionIcon variant='subtle' color='gray' onClick={open}>
-              <IconShare3
-                style={{ width: rem(60), height: rem(60) }}
-                color={theme.colors.blue[6]}
-                stroke={1.5}
-              />
-            </ActionIcon>
-          </Group>
-          <Text fz='xs' c='dimmed'>
-            {post.likes} likes
-          </Text>
-        </Card.Section>
-      </Card>
-      <Modal size={'xl'} opened={opened} onClose={close} title='Share Post' centered>
-        <FormShare post={post} />
-      </Modal>
-      <Modal size={'xl'} opened={openedFormEdit} onClose={closeFormEdit} title='Edit Post' centered>
-        <FormEditPost post={post} closeModal={closeFormEdit} />
-      </Modal>
-      <div className='mt-4 w-[60%] mx-auto'>
-        <form onSubmit={formCreateComment.onSubmit(handleCreateComment)}>
-          <Card withBorder padding='md'>
-            <Card.Section>
-              <Textarea
-                variant='unstyled'
-                placeholder='Write a comment...'
-                className='px-4'
-                {...formCreateComment.getInputProps('content')}
-              />
+            <Card.Section className='mt-4 mb-[-5] mx-[-5] py-[10px] px-5'>
+              <Group gap={2}>
+                {post.isLike ? (
+                  <ActionIcon
+                    variant='subtle'
+                    color='gray'
+                    onClick={() => handleUnLikePost(post._id)}
+                  >
+                    <IconHeartFilled
+                      style={{ width: rem(60), height: rem(60) }}
+                      color={theme.colors.red[6]}
+                      stroke={1.5}
+                    />
+                  </ActionIcon>
+                ) : (
+                  <ActionIcon
+                    variant='subtle'
+                    color='gray'
+                    onClick={() => handleLikePost(post._id)}
+                  >
+                    <IconHeart
+                      style={{ width: rem(60), height: rem(60) }}
+                      color={theme.colors.red[6]}
+                      stroke={1.5}
+                    />
+                  </ActionIcon>
+                )}
+                {post.isBookmark ? (
+                  <ActionIcon
+                    variant='subtle'
+                    color='gray'
+                    onClick={() => handleUnBookmarkPost(post._id)}
+                  >
+                    <IconBookmarkFilled
+                      style={{ width: rem(60), height: rem(60) }}
+                      color={theme.colors.yellow[6]}
+                      stroke={1.5}
+                    />
+                  </ActionIcon>
+                ) : (
+                  <ActionIcon
+                    variant='subtle'
+                    color='gray'
+                    onClick={() => handleBookmarkPost(post._id)}
+                  >
+                    <IconBookmark
+                      style={{ width: rem(60), height: rem(60) }}
+                      color={theme.colors.yellow[6]}
+                      stroke={1.5}
+                    />
+                  </ActionIcon>
+                )}
+                <ActionIcon variant='subtle' color='gray' onClick={open}>
+                  <IconShare3
+                    style={{ width: rem(60), height: rem(60) }}
+                    color={theme.colors.blue[6]}
+                    stroke={1.5}
+                  />
+                </ActionIcon>
+              </Group>
+              <Text fz='xs' c='dimmed'>
+                {post.likes} likes
+              </Text>
             </Card.Section>
-            <Group justify='space-between'>
-              <ActionIcon
-                type='submit'
-                variant='subtle'
-                color='dark'
-                disabled={formCreateComment.getInputProps('content').value === ''}
-              >
-                <IconSend2 style={{ width: rem(60), height: rem(60) }} stroke={1.5} />
-              </ActionIcon>
-            </Group>
           </Card>
-        </form>
-        <div className='mt-4'>
-          {comments && <SimpleGrid cols={1}>{items}</SimpleGrid>}
-          <Pagination
-            total={data.length}
-            value={activePage}
-            onChange={setActivePage}
-            mt='md'
-            className='flex justify-center '
-            withEdges
-          />
+          <Modal size={'xl'} opened={opened} onClose={close} title='Share Post' centered>
+            <FormShare post={post} />
+          </Modal>
+          <Modal
+            size={'xl'}
+            opened={openedFormEdit}
+            onClose={closeFormEdit}
+            title='Edit Post'
+            centered
+          >
+            <FormEditPost post={post} closeModal={closeFormEdit} />
+          </Modal>
+          <div className='mt-4 w-[60%] mx-auto'>
+            <form onSubmit={formCreateComment.onSubmit(handleCreateComment)}>
+              <Card withBorder padding='md'>
+                <Card.Section>
+                  <Textarea
+                    variant='unstyled'
+                    placeholder='Write a comment...'
+                    className='px-4'
+                    {...formCreateComment.getInputProps('content')}
+                  />
+                </Card.Section>
+                <Group justify='space-between'>
+                  <ActionIcon
+                    type='submit'
+                    variant='subtle'
+                    color='dark'
+                    disabled={formCreateComment.getInputProps('content').value === ''}
+                    loading={createCommentCommandHandle.isLoading()}
+                  >
+                    <IconSend2 style={{ width: rem(60), height: rem(60) }} stroke={1.5} />
+                  </ActionIcon>
+                </Group>
+              </Card>
+            </form>
+            <div className='mt-4'>
+              {comments && <SimpleGrid cols={1}>{items}</SimpleGrid>}
+              <Pagination
+                total={data.length}
+                value={activePage}
+                onChange={setActivePage}
+                mt='md'
+                className='flex justify-center '
+                withEdges
+              />
+            </div>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }

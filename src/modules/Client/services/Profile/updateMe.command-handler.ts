@@ -24,7 +24,6 @@ class UpdateMeCommandHandler {
     await this._uploadImageMutation.mutate(formData, {
       onSuccess: (data: any) => {
         handleSuccess(data)
-        console.log(data)
       },
       onError: (error: any) => {
         handleError(error)
@@ -50,7 +49,7 @@ class UpdateMeCommandHandler {
   }
 
   isLoading() {
-    return this._updateMeMutation.isLoading
+    return this._updateMeMutation.isLoading || this._uploadImageMutation.isLoading
   }
 }
 

@@ -1,5 +1,6 @@
 import { io } from 'socket.io-client'
+import connect from '../constants/connect'
 
-const socket = io('https://sentinel-backend.dqh.world')
+const socket = io(connect.baseUrl)
 
 export default socket
