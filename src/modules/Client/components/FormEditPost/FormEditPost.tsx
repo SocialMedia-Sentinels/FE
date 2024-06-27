@@ -1,13 +1,26 @@
+/* eslint-disable react/jsx-key */
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable jsx-a11y/media-has-caption */
 import { useForm, UseFormReturnType } from '@mantine/form'
 import { NewFeed } from '../../interfaces/Post'
-import { BackgroundImage, Button, Switch, TagsInput, Textarea } from '@mantine/core'
+import {
+  Avatar,
+  BackgroundImage,
+  Badge,
+  Button,
+  Card,
+  Group,
+  Switch,
+  TagsInput,
+  Text,
+  Textarea
+} from '@mantine/core'
 import { useState } from 'react'
 import { UpdatePostCommandHandler } from '../../services'
 import { toast } from 'react-toastify'
-import { IconPhotoScan, IconVideo } from '@tabler/icons-react'
+import { IconPhotoScan, IconUsers, IconVideo, IconWorld } from '@tabler/icons-react'
+import { formatTimeToReadable } from 'src/modules/Share/utils'
 interface FormValues {
   type: number
   audience: number
@@ -21,7 +34,7 @@ interface Props {
   closeModal: () => void
 }
 const FormEditPost = ({ post, closeModal }: Props) => {
-  // console.log(post)
+  console.log(post)
 
   const [showImageUpload, setShowImageUpload] = useState<boolean>(
     post.medias.length > 0 && post.medias[0].type === 0
@@ -120,6 +133,7 @@ const FormEditPost = ({ post, closeModal }: Props) => {
             closeModal()
             setSelectedImages([])
             setSelectedFilesImage([])
+            window.location.reload()
           },
           (error: any) => {
             toast.error(error)
@@ -134,6 +148,7 @@ const FormEditPost = ({ post, closeModal }: Props) => {
             closeModal()
             setSelectedVideo('')
             setSelectedFileVideo([])
+            window.location.reload()
           },
           (error: any) => {
             toast.error(error)
@@ -145,6 +160,7 @@ const FormEditPost = ({ post, closeModal }: Props) => {
           () => {
             formEditPost.reset()
             closeModal()
+            window.location.reload()
           },
           (error: any) => {
             toast.error(error.response.data.message)
@@ -179,36 +195,119 @@ const FormEditPost = ({ post, closeModal }: Props) => {
         minRows={4}
         {...formEditPost.getInputProps('content')}
       />
-      <div className='flex justify-start items-center'>
-        <IconVideo
-          size={'50'}
-          onClick={() => {
-            setShowImageUpload(false),
-              setShowVideoUpload(true),
-              setSelectedImages([]),
-              setSelectedFilesImage([])
-          }}
-          style={{
-            border: showVideoUpload ? '1px solid' : 'none',
-            borderRadius: '10px',
-            backgroundColor: showVideoUpload ? '#A1DD70' : '#fff'
-          }}
-        />
-        <IconPhotoScan
-          size={'50'}
-          onClick={() => {
-            setShowImageUpload(true),
-              setShowVideoUpload(false),
-              setSelectedFileVideo([]),
-              setSelectedVideo('')
-          }}
-          style={{
-            border: showImageUpload ? '1px solid' : 'none',
-            borderRadius: '10px',
-            backgroundColor: showImageUpload ? '#A1DD70' : '#fff'
-          }}
-        />
-      </div>
+      {post.type == 0 && (
+        <div className='flex justify-start items-center'>
+          <IconVideo
+            size={'50'}
+            onClick={() => {
+              setShowImageUpload(false),
+                setShowVideoUpload(true),
+                setSelectedImages([]),
+                setSelectedFilesImage([])
+            }}
+            style={{
+              border: showVideoUpload ? '1px solid' : 'none',
+              borderRadius: '10px',
+              backgroundColor: showVideoUpload ? '#A1DD70' : '#fff'
+            }}
+          />
+          <IconPhotoScan
+            size={'50'}
+            onClick={() => {
+              setShowImageUpload(true),
+                setShowVideoUpload(false),
+                setSelectedFileVideo([]),
+                setSelectedVideo('')
+            }}
+            style={{
+              border: showImageUpload ? '1px solid' : 'none',
+              borderRadius: '10px',
+              backgroundColor: showImageUpload ? '#A1DD70' : '#fff'
+            }}
+          />
+        </div>
+      )}
+      {post.type == 1 && post.post_parent?._id && (
+        <Card
+          withBorder
+          padding='md'
+          radius='md'
+          className='hover:cursor-pointer hover:bg-[#F6F5F2]/70'
+        >
+          <Group className='mb-2'>
+            <Avatar src={post.post_parent.user?.avatar} radius='lg' />
+            <div className='inline-grid'>
+              <Text fw={500}>{post.post_parent.user?.username}</Text>
+              {post.post_parent.type == 0 ? (
+                <Text fz='xs' c='dimmed' className='flex justify-center items-center gap-1'>
+                  posted {formatTimeToReadable(post.post_parent.created_at)}
+                  {post.audience == 0 ? (
+                    <IconWorld className='w-4 h-4' />
+                  ) : (
+                    <IconUsers className='w-4 h-4' />
+                  )}
+                </Text>
+              ) : (
+                <Text fz='xs' c='dimmed' className='flex justify-center items-center gap-1'>
+                  shared {formatTimeToReadable(post.post_parent.created_at)}
+                  {post.audience == 0 ? (
+                    <IconWorld className='w-4 h-4' />
+                  ) : (
+                    <IconUsers className='w-4 h-4' />
+                  )}
+                </Text>
+              )}
+            </div>
+          </Group>
+          <Text className='font-medium text-[#3e3f5e] mb-4'>{post.post_parent.content}</Text>
+          <div className='flex flex-row justify-center items-center gap-4 mb-4'>
+            {post.post_parent.medias &&
+              post.post_parent.medias[0].type == 0 &&
+              post.post_parent.medias.length > 0 &&
+              post.post_parent.medias.map((image, index) => {
+                return (
+                  <BackgroundImage
+                    className='relative shadow-lg w-48 h-48 flex justify-end items-start'
+                    src={image.url}
+                    key={index}
+                    radius='sm'
+                  ></BackgroundImage>
+                )
+              })}
+            {post.post_parent.medias &&
+              post.post_parent.medias[0].type == 1 &&
+              post.post_parent.medias.length > 0 &&
+              post.post_parent.medias.map((video, index) => {
+                return (
+                  <Card.Section className='w-80 px-4 m-auto'>
+                    <video controls key={index}>
+                      <source src={video.url} type='video/mp4' />
+                    </video>
+                  </Card.Section>
+                )
+              })}
+          </div>
+          <Group>
+            {post.post_parent.hashtags &&
+              post.post_parent.hashtags.length > 0 &&
+              post.post_parent.hashtags.map((hashtag, index) => (
+                <Badge w='fit-content' variant='light' key={index}>
+                  {hashtag.name}
+                </Badge>
+              ))}
+          </Group>
+        </Card>
+      )}
+      {post.type == 1 && !post.post_parent?._id && (
+        <Card
+          withBorder
+          padding='md'
+          radius='md'
+          className='hover:cursor-pointer hover:bg-[#F6F5F2]/70'
+        >
+          <Text className='text-center'>Post not found</Text>
+        </Card>
+      )}
       {showImageUpload && (
         <div className='flex flex-row justify-center items-center gap-4'>
           {selectedImages.length < 1 && (

@@ -66,6 +66,8 @@ interface FormValues {
   post_id: string
 }
 const PostDetail = ({ post, deletePostCommandHandler }: Props) => {
+  console.log(post)
+
   const [opened, { open, close }] = useDisclosure(false)
   const [openedFormEdit, { open: openFormEdit, close: closeFormEdit }] = useDisclosure(false)
   const [activePage, setActivePage] = useState(1)
@@ -257,7 +259,7 @@ const PostDetail = ({ post, deletePostCommandHandler }: Props) => {
         <Spoiler maxHeight={100} my='xs' showLabel='Show more' hideLabel='Hide'>
           {post.content}
         </Spoiler>
-        {post.type == 1 && post.post_parent && (
+        {post.type == 1 && post.post_parent?._id && (
           <Card
             withBorder
             padding='md'
@@ -327,6 +329,16 @@ const PostDetail = ({ post, deletePostCommandHandler }: Props) => {
                   </Badge>
                 ))}
             </Group>
+          </Card>
+        )}
+        {post.type == 1 && !post.post_parent?._id && (
+          <Card
+            withBorder
+            padding='md'
+            radius='md'
+            className='hover:cursor-pointer hover:bg-[#F6F5F2]/70'
+          >
+            <Text className='text-center'>Post not found</Text>
           </Card>
         )}
         <Group>

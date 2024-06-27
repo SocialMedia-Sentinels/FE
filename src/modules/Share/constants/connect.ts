@@ -1,4 +1,4 @@
 const connect = {
-  baseUrl: 'https://sentinel-backend.dqh.world'
+  baseUrl: 'http://localhost:4000'
 } as const
 export default connect

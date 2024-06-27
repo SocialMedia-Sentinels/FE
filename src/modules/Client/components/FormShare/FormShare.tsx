@@ -1,11 +1,25 @@
 /* eslint-disable jsx-a11y/media-has-caption */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { BackgroundImage, Button, Card, Switch, TagsInput, Text, Textarea } from '@mantine/core'
+import {
+  Avatar,
+  BackgroundImage,
+  Badge,
+  Button,
+  Card,
+  Group,
+  Switch,
+  TagsInput,
+  Text,
+  Textarea
+} from '@mantine/core'
 import { useForm, UseFormReturnType } from '@mantine/form'
 import { NewFeed } from '../../interfaces/Post'
 import { useState } from 'react'
 import { CreatePostCommandHandler } from '../../services'
 import { toast } from 'react-toastify'
+import path from 'src/modules/Share/constants/path'
+import { formatTimeToReadable } from 'src/modules/Share/utils'
+import { IconUsers, IconWorld } from '@tabler/icons-react'
 interface FormValues {
   type: number
   audience: number
@@ -55,6 +69,7 @@ const FormShare = ({ post }: Props) => {
       }
     )
   }
+  console.log(post)
 
   return (
     <form className='flex flex-col gap-4' onSubmit={formSharePost.onSubmit(handleSharePost)}>
@@ -67,6 +82,7 @@ const FormShare = ({ post }: Props) => {
         }}
         onChange={handleSwitchChange}
       />
+
       <Textarea
         variant='unstyled'
         placeholder='What do you think?'
@@ -75,6 +91,34 @@ const FormShare = ({ post }: Props) => {
         {...formSharePost.getInputProps('content')}
       />
       <Card shadow='sm' radius='md' withBorder>
+        <Group className='mb-2'>
+          <Avatar src={post.user.avatar} radius='lg' />
+          <div className='inline-grid'>
+            <Text fw={500} component='a' href={`${path.profile}/${post.user.username}`}>
+              {post.user.username}
+            </Text>
+            {post.type == 0 ? (
+              <Text fz='xs' c='dimmed' className='flex justify-center items-center gap-1'>
+                posted {formatTimeToReadable(post.created_at)}
+                {post.audience == 0 ? (
+                  <IconWorld className='w-4 h-4' />
+                ) : (
+                  <IconUsers className='w-4 h-4' />
+                )}
+              </Text>
+            ) : (
+              <Text fz='xs' c='dimmed' className='flex justify-center items-center gap-1'>
+                shared {formatTimeToReadable(post.created_at)}
+                {post.audience == 0 ? (
+                  <IconWorld className='w-4 h-4' />
+                ) : (
+                  <IconUsers className='w-4 h-4' />
+                )}
+              </Text>
+            )}
+          </div>
+        </Group>
+
         <Text className='font-bold text-[#3e3f5e] mb-4'>{post.content}</Text>
         <div className='flex flex-row justify-center items-center gap-4'>
           {post.medias.length > 0 &&
@@ -99,6 +143,14 @@ const FormShare = ({ post }: Props) => {
               )
             })}
         </div>
+        <Group my={'sm'}>
+          {post.hashtags.length != 0 &&
+            post.hashtags.map((hashtag, index) => (
+              <Badge w='fit-content' variant='light' key={index}>
+                {hashtag.name}
+              </Badge>
+            ))}
+        </Group>
       </Card>
       <TagsInput
         variant='unstyled'
